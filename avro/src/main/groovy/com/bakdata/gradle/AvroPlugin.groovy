@@ -43,7 +43,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
-class AvroDependencyPlugin implements Plugin<Project> {
+class AvroPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.plugins.apply("com.github.davidmc24.gradle.plugin.avro")
