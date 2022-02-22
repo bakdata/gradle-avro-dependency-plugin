@@ -63,9 +63,9 @@ if (!version.toString().endsWith("-SNAPSHOT")) {
                 // java-gradle-plugin requires this block, but we already added the definitions in META-INF for unit testing...
                 configure<GradlePluginDevelopmentExtension> {
                     plugins {
-                        create("${project.name.capitalize()}Plugin") {
+                        create("${project.name.capitalize()}DependencyPlugin") {
                             id = "com.bakdata.${project.name}"
-                            implementationClass = "com.bakdata.gradle.${project.name.capitalize()}Plugin"
+                            implementationClass = "com.bakdata.gradle.${project.name.capitalize()}DependencyPlugin"
                             description = project.description
                         }
                     }
