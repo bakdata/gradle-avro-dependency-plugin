@@ -129,13 +129,13 @@ internal class AvroPluginTest {
                 }
                 .anySatisfy {
                     softly.assertThat(it.name).isEqualTo("avroImplementation")
-                    softly.assertThat(it.extendsFrom).isEmpty()
+                    softly.assertThat(it.extendsFrom).anySatisfy { extendsFrom ->
+                        softly.assertThat(extendsFrom.name).isEqualTo("avroApi")
+                    }
                 }
                 .anySatisfy {
                     softly.assertThat(it.name).isEqualTo("avroApi")
-                    softly.assertThat(it.extendsFrom).anySatisfy { extendsFrom ->
-                        softly.assertThat(extendsFrom.name).isEqualTo("avroImplementation")
-                    }
+                    softly.assertThat(it.extendsFrom).isEmpty()
                 }
             softly.assertThat(project.extensions.getByType(SourceSetContainer::class))
                 .anySatisfy {
