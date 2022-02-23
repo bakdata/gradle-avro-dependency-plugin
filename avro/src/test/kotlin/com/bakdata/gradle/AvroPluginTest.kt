@@ -46,7 +46,7 @@ internal class AvroPluginTest {
 
         Assertions.assertThatCode {
             project.pluginManager.apply("java")
-            project.pluginManager.apply("com.bakdata.sonar")
+            project.pluginManager.apply("com.bakdata.avro")
             project.evaluate()
         }.doesNotThrowAnyException()
 

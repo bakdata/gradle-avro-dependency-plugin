@@ -54,7 +54,6 @@ internal class AvroPluginIntegrationTest {
 
         val result = GradleRunner.create()
                 .withProjectDir(testProjectDir.toFile())
-                .withArguments("sonarqube", "-Dsonar.scanner.dumpToFile=${testProjectDir.resolve("dump")}")
                 .withProjectPluginClassPath()
                 .build()
 
