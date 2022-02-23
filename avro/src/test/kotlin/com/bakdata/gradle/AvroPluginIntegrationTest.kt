@@ -46,8 +46,18 @@ internal class AvroPluginIntegrationTest {
 
     @Test
     fun testSingleModuleProject(@TempDir testProjectDir: Path) {
-        Files.copy(AvroPluginIntegrationTest::class.java.getResourceAsStream("/build.gradle.kts"),
-                testProjectDir.resolve("build.gradle.kts"))
+        Files.writeString(testProjectDir.resolve("build.gradle.kts"), """
+            plugins {
+                java
+                id("com.bakdata.avro")
+            }
+            repositories {
+                mavenCentral()
+            }
+            dependencies {
+                avroImplementation(group = "com.bakdata.kafka", name = "error-handling", version = "1.2.2")
+            }
+        """.trimIndent())
         Files.createDirectories(testProjectDir.resolve("src/main/avro/"))
         Files.copy(AvroPluginIntegrationTest::class.java.getResourceAsStream("/Record.avsc"),
                 testProjectDir.resolve("src/main/avro/Record.avsc"))

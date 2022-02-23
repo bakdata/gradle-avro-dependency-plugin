@@ -71,8 +71,8 @@ if (!version.toString().endsWith("-SNAPSHOT")) {
                 }
                 // actual block of plugin portal config, need to be done on each subproject as the plugin does not support multi-module projects yet...
                 configure<com.gradle.publish.PluginBundleExtension> {
-                    website = "https://github.com/bakdata/gradle-plugins"
-                    vcsUrl = "https://github.com/bakdata/gradle-plugins"
+                    website = "https://github.com/bakdata/gradle-avro-dependency-plugin"
+                    vcsUrl = "https://github.com/bakdata/gradle-avro-dependency-plugin"
                     (plugins) {
                         "${name.capitalize()}Plugin" {
                             displayName = "Bakdata $name plugin"
