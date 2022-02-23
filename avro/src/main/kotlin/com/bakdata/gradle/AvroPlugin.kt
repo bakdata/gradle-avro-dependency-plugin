@@ -56,7 +56,7 @@ class AvroPlugin : Plugin<Project> {
     private fun Project.setupSourceSet(sourceSet: SourceSet) {
         val generateAvroJava: GenerateAvroJavaTask =
             tasks.named(sourceSet.getTaskName("generate", "avroJava"), GenerateAvroJavaTask::class.java).get()
-        val configureDeleteExternalJava: Task = task(sourceSet.getTaskName("configure", "deleteExternalJava")) {
+        val configureDeleteExternalJava: Task = task(sourceSet.getTaskName("configureDelete", "externalJava")) {
             dependsOn(generateAvroJava)
             group = generateAvroJava.group
         }
@@ -70,7 +70,7 @@ class AvroPlugin : Plugin<Project> {
         compileJava.dependsOn(deleteExternalJava)
 
         val externalAvroDir: Provider<Directory> = layout.buildDirectory.dir("external-${sourceSet.name}-avro")
-        val configureCopyAvro: Task = task(sourceSet.getTaskName("configure", "copyExternalAvroResources")) {
+        val configureCopyAvro: Task = task(sourceSet.getTaskName("configureCopy", "externalAvroResources")) {
             group = generateAvroJava.group
         }
         val copyAvro: Copy =

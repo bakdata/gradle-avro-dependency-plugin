@@ -29,19 +29,28 @@ import org.assertj.core.api.Condition
 import org.assertj.core.api.SoftAssertions
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.internal.project.DefaultProject
+import org.gradle.api.tasks.SourceSetContainer
+import org.gradle.kotlin.dsl.getByType
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.Test
+import java.io.File
 
 internal class AvroPluginTest {
     fun taskWithName(name: String): Condition<Task> = Condition({ it.name == name }, "Task with name $name")
+    fun configurationWithName(name: String): Condition<Configuration> =
+        Condition({ it.name == name }, "Configuration with name $name")
+
+    fun folderWithName(name: String): Condition<File> =
+        Condition({ it.path.endsWith(name.replace("/", File.separator)) }, "File with name $name")
 
     fun Project.evaluate() {
         (this as DefaultProject).evaluate()
     }
 
     @Test
-    fun testSingleModuleProjectWithJavaFirst() {
+    fun shouldAddTasksAndConfigurations() {
         val project = ProjectBuilder.builder().build()
 
         Assertions.assertThatCode {
@@ -51,8 +60,68 @@ internal class AvroPluginTest {
         }.doesNotThrowAnyException()
 
         SoftAssertions.assertSoftly { softly ->
+            softly.assertThat(project.plugins.hasPlugin("com.github.davidmc24.gradle.plugin.avro"))
+                .isTrue
             softly.assertThat(project.tasks)
-                .haveExactly(1, taskWithName("compileAvroJava"))
+                .haveExactly(1, taskWithName("configureDeleteExternalJava"))
+                .haveExactly(1, taskWithName("deleteExternalJava"))
+                .haveExactly(1, taskWithName("configureCopyExternalAvroResources"))
+                .haveExactly(1, taskWithName("copyExternalAvroResources"))
+                .haveExactly(1, taskWithName("configureDeleteTestExternalJava"))
+                .haveExactly(1, taskWithName("deleteTestExternalJava"))
+                .haveExactly(1, taskWithName("configureCopyTestExternalAvroResources"))
+                .haveExactly(1, taskWithName("copyTestExternalAvroResources"))
+            softly.assertThat(project.configurations)
+                .haveExactly(1, configurationWithName("avroImplementation"))
+                .haveExactly(0, configurationWithName("avroApi"))
+                .haveExactly(1, configurationWithName("testAvroImplementation"))
+            softly.assertThat(project.extensions.getByType(SourceSetContainer::class))
+                .anySatisfy {
+                    softly.assertThat(it.name).isEqualTo("main")
+                    softly.assertThat(it.resources.srcDirs)
+                        .haveExactly(0, folderWithName("src/main/avro"))
+                }
+        }
+    }
+
+    @Test
+    fun shouldAddApiConfigurations() {
+        val project = ProjectBuilder.builder().build()
+
+        Assertions.assertThatCode {
+            project.pluginManager.apply("java-library")
+            project.pluginManager.apply("com.bakdata.avro")
+            project.evaluate()
+        }.doesNotThrowAnyException()
+
+        SoftAssertions.assertSoftly { softly ->
+            softly.assertThat(project.plugins.hasPlugin("com.github.davidmc24.gradle.plugin.avro"))
+                .isTrue
+            softly.assertThat(project.tasks)
+                .haveExactly(1, taskWithName("configureDeleteExternalJava"))
+                .haveExactly(1, taskWithName("deleteExternalJava"))
+                .haveExactly(1, taskWithName("configureCopyExternalAvroResources"))
+                .haveExactly(1, taskWithName("copyExternalAvroResources"))
+                .haveExactly(1, taskWithName("configureDeleteTestExternalJava"))
+                .haveExactly(1, taskWithName("deleteTestExternalJava"))
+                .haveExactly(1, taskWithName("configureCopyTestExternalAvroResources"))
+                .haveExactly(1, taskWithName("copyTestExternalAvroResources"))
+            softly.assertThat(project.configurations)
+                .haveExactly(1, configurationWithName("avroImplementation"))
+                .haveExactly(1, configurationWithName("avroApi"))
+                .haveExactly(1, configurationWithName("testAvroImplementation"))
+                .haveExactly(0, configurationWithName("testAvroApi"))
+            softly.assertThat(project.extensions.getByType(SourceSetContainer::class))
+                .anySatisfy {
+                    softly.assertThat(it.name).isEqualTo("main")
+                    softly.assertThat(it.resources.srcDirs)
+                        .haveExactly(1, folderWithName("src/main/avro"))
+                }
+                .anySatisfy {
+                    softly.assertThat(it.name).isEqualTo("test")
+                    softly.assertThat(it.resources.srcDirs)
+                        .haveExactly(0, folderWithName("src/test/avro"))
+                }
         }
     }
 }

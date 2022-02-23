@@ -46,7 +46,8 @@ internal class AvroPluginIntegrationTest {
 
     @Test
     fun testSingleModuleProject(@TempDir testProjectDir: Path) {
-        Files.writeString(testProjectDir.resolve("build.gradle.kts"), """
+        Files.writeString(
+            testProjectDir.resolve("build.gradle.kts"), """
             plugins {
                 java
                 id("com.bakdata.avro")
@@ -57,19 +58,29 @@ internal class AvroPluginIntegrationTest {
             dependencies {
                 avroImplementation(group = "com.bakdata.kafka", name = "error-handling", version = "1.2.2")
             }
-        """.trimIndent())
+        """.trimIndent()
+        )
         Files.createDirectories(testProjectDir.resolve("src/main/avro/"))
-        Files.copy(AvroPluginIntegrationTest::class.java.getResourceAsStream("/Record.avsc"),
-                testProjectDir.resolve("src/main/avro/Record.avsc"))
+        Files.copy(
+            AvroPluginIntegrationTest::class.java.getResourceAsStream("/Record.avsc"),
+            testProjectDir.resolve("src/main/avro/Record.avsc")
+        )
 
         val result = GradleRunner.create()
-                .withProjectDir(testProjectDir.toFile())
-                .withProjectPluginClassPath()
-                .build()
+            .withProjectDir(testProjectDir.toFile())
+            .withProjectPluginClassPath()
+            .build()
 
         SoftAssertions.assertSoftly { softly ->
             softly.assertThat(result.tasks)
-                    .haveExactly(1, taskWithPathAndOutcome(":compileAvroJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":configureDeleteExternalJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":deleteExternalJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":configureCopyExternalAvroResources", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":copyExternalAvroResources", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":configureDeleteTestExternalJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":deleteTestExternalJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":configureCopyTestExternalAvroResources", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":copyTestExternalAvroResources", TaskOutcome.SUCCESS))
         }
     }
 }
