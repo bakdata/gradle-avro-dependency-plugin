@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "TestRecord",
+  "namespace": "com.bakdata",
+  "fields": [
+    {
+      "name": "dead_letter",
+      "type": "com.bakdata.kafka.DeadLetter"
+    }
+  ]
+}
