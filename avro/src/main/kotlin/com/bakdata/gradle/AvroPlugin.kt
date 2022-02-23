@@ -212,9 +212,11 @@ class AvroPlugin : Plugin<Project> {
     private fun Configuration.findExclusions() =
         filter { file: File -> file.name.endsWith("jar") }
             .flatMap { file: File ->
-                ZipFile(file).entries().asSequence()
-                    .filter { entry: ZipEntry -> entry.name.endsWith(".class") }
-                    .map { entry: ZipEntry -> entry.name.replace(Regex(".class$"), ".java") }
-                    .asIterable()
+                findExclusions(file)
             }
+
+    private fun findExclusions(file: File) = ZipFile(file).entries().asSequence()
+        .filter { entry: ZipEntry -> entry.name.endsWith(".class") }
+        .map { entry: ZipEntry -> entry.name.replace(Regex(".class$"), ".java") }
+        .asIterable()
 }
