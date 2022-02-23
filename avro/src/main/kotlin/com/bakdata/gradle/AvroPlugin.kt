@@ -39,7 +39,7 @@ class AvroPlugin : Plugin<Project> {
         val configurationsWithAvroConfiguration: Map<Configuration, Configuration> = sourceSets
             .flatMap { sourceSet: SourceSet ->
                 SourceSetConfigurator(project, sourceSet).configure()
-            }.associateBy({ it.first }, { it.second })
+            }.toMap()
         applyInheritance(configurationsWithAvroConfiguration)
     }
 
