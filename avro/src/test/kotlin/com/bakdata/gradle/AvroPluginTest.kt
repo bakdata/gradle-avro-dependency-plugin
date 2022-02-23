@@ -75,6 +75,16 @@ internal class AvroPluginTest {
                 .haveExactly(1, configurationWithName("avroImplementation"))
                 .haveExactly(0, configurationWithName("avroApi"))
                 .haveExactly(1, configurationWithName("testAvroImplementation"))
+                .anySatisfy {
+                    softly.assertThat(it.name).isEqualTo("testAvroImplementation")
+                    softly.assertThat(it.extendsFrom).anySatisfy { extendsFrom ->
+                        softly.assertThat(extendsFrom.name).isEqualTo("avroImplementation")
+                    }
+                }
+                .anySatisfy {
+                    softly.assertThat(it.name).isEqualTo("avroImplementation")
+                    softly.assertThat(it.extendsFrom).isEmpty()
+                }
             softly.assertThat(project.extensions.getByType(SourceSetContainer::class))
                 .anySatisfy {
                     softly.assertThat(it.name).isEqualTo("main")
@@ -111,6 +121,22 @@ internal class AvroPluginTest {
                 .haveExactly(1, configurationWithName("avroApi"))
                 .haveExactly(1, configurationWithName("testAvroImplementation"))
                 .haveExactly(0, configurationWithName("testAvroApi"))
+                .anySatisfy {
+                    softly.assertThat(it.name).isEqualTo("testAvroImplementation")
+                    softly.assertThat(it.extendsFrom).anySatisfy { extendsFrom ->
+                        softly.assertThat(extendsFrom.name).isEqualTo("avroImplementation")
+                    }
+                }
+                .anySatisfy {
+                    softly.assertThat(it.name).isEqualTo("avroImplementation")
+                    softly.assertThat(it.extendsFrom).isEmpty()
+                }
+                .anySatisfy {
+                    softly.assertThat(it.name).isEqualTo("avroApi")
+                    softly.assertThat(it.extendsFrom).anySatisfy { extendsFrom ->
+                        softly.assertThat(extendsFrom.name).isEqualTo("avroImplementation")
+                    }
+                }
             softly.assertThat(project.extensions.getByType(SourceSetContainer::class))
                 .anySatisfy {
                     softly.assertThat(it.name).isEqualTo("main")

@@ -57,8 +57,6 @@ internal class AvroPluginIntegrationTest {
             }
             dependencies {
                 avroImplementation(group = "com.bakdata.kafka", name = "error-handling", version = "1.2.2")
-                //TODO make testAvroImplementation inherit from avroImplementation
-                testAvroImplementation(group = "com.bakdata.kafka", name = "error-handling", version = "1.2.2")
             }
         """.trimIndent()
         )

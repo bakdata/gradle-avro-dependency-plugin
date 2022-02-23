@@ -48,12 +48,25 @@ class AvroPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.plugins.apply("com.github.davidmc24.gradle.plugin.avro")
         val sourceSets: SourceSetContainer = project.getSourceSets()
-        sourceSets.forEach { sourceSet ->
-            project.setupSourceSet(sourceSet)
+        val configurationsWithOriginalExtends: Map<Configuration, Configuration> = sourceSets
+            .flatMap { sourceSet: SourceSet ->
+                project.setupSourceSet(sourceSet)
+            }.associateBy({ it.first }, { it.second })
+        applyInheritance(configurationsWithOriginalExtends)
+    }
+
+    private fun applyInheritance(configurationsWithOriginalExtends: Map<Configuration, Configuration>) {
+        configurationsWithOriginalExtends.forEach { (originalConfiguration: Configuration, avroConfiguration: Configuration) ->
+            originalConfiguration.extendsFrom.forEach { extendsFrom: Configuration ->
+                configurationsWithOriginalExtends[extendsFrom]?.also { extendsFromAvroConfiguration: Configuration ->
+                    println("Letting ${avroConfiguration.name} extend from ${extendsFromAvroConfiguration.name}")
+                    avroConfiguration.extendsFrom(extendsFromAvroConfiguration)
+                }
+            }
         }
     }
 
-    private fun Project.setupSourceSet(sourceSet: SourceSet) {
+    private fun Project.setupSourceSet(sourceSet: SourceSet): List<Pair<Configuration, Configuration>> {
         val generateAvroJava: GenerateAvroJavaTask =
             tasks.named(sourceSet.getTaskName("generate", "avroJava"), GenerateAvroJavaTask::class.java).get()
         val configureDeleteExternalJava: Task = task(sourceSet.getTaskName("configureDelete", "externalJava")) {
@@ -83,7 +96,7 @@ class AvroPlugin : Plugin<Project> {
         with(configurations) {
             registerResources(sourceSet)
             val configurations: List<String> = sourceSet.getRelevantConfigurations()
-            configurations.forEach { configurationName ->
+            return configurations.mapNotNull { configurationName ->
                 setupConfiguration(
                     configurationName,
                     sourceSet,
@@ -109,8 +122,8 @@ class AvroPlugin : Plugin<Project> {
         copyAvro: Copy,
         configureCopyAvro: Task,
         avroOutputs: FileCollection
-    ) {
-        findByName(configurationName)?.also { configuration: Configuration ->
+    ): Pair<Configuration, Configuration>? {
+        return findByName(configurationName)?.let { configuration: Configuration ->
             val name: String = sourceSet.getConfigurationName("avro", configurationName)
             val avroConfiguration: Configuration = create(name)
             configuration.setupConfiguration(
@@ -123,6 +136,7 @@ class AvroPlugin : Plugin<Project> {
                 configureCopyAvro,
                 avroOutputs
             )
+            Pair(configuration, avroConfiguration)
         }
     }
 
