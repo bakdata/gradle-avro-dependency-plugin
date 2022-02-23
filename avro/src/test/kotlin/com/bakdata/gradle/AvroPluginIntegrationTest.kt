@@ -45,7 +45,7 @@ internal class AvroPluginIntegrationTest {
     }
 
     @Test
-    fun testSingleModuleProject(@TempDir testProjectDir: Path) {
+    fun shouldCompileAndHaveNoExternalClassFiles(@TempDir testProjectDir: Path) {
         Files.writeString(
             testProjectDir.resolve("build.gradle.kts"), """
             plugins {
@@ -57,6 +57,8 @@ internal class AvroPluginIntegrationTest {
             }
             dependencies {
                 avroImplementation(group = "com.bakdata.kafka", name = "error-handling", version = "1.2.2")
+                //TODO make testAvroImplementation inherit from avroImplementation
+                testAvroImplementation(group = "com.bakdata.kafka", name = "error-handling", version = "1.2.2")
             }
         """.trimIndent()
         )
@@ -65,9 +67,15 @@ internal class AvroPluginIntegrationTest {
             AvroPluginIntegrationTest::class.java.getResourceAsStream("/Record.avsc"),
             testProjectDir.resolve("src/main/avro/Record.avsc")
         )
+        Files.createDirectories(testProjectDir.resolve("src/test/avro/"))
+        Files.copy(
+            AvroPluginIntegrationTest::class.java.getResourceAsStream("/TestRecord.avsc"),
+            testProjectDir.resolve("src/test/avro/TestRecord.avsc")
+        )
 
         val result = GradleRunner.create()
             .withProjectDir(testProjectDir.toFile())
+            .withArguments("build")
             .withProjectPluginClassPath()
             .build()
 
@@ -81,6 +89,15 @@ internal class AvroPluginIntegrationTest {
                 .haveExactly(1, taskWithPathAndOutcome(":deleteTestExternalJava", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":configureCopyTestExternalAvroResources", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":copyTestExternalAvroResources", TaskOutcome.SUCCESS))
+            val javaClasses = testProjectDir.resolve("build/classes/java")
+            softly.assertThat(javaClasses.resolve("main/com/bakdata/kafka/DeadLetter.class").toFile())
+                .doesNotExist()
+            softly.assertThat(javaClasses.resolve("main/com/bakdata/Record.class").toFile())
+                .exists()
+            softly.assertThat(javaClasses.resolve("test/com/bakdata/kafka/DeadLetter.class").toFile())
+                .doesNotExist()
+            softly.assertThat(javaClasses.resolve("test/com/bakdata/TestRecord.class").toFile())
+                .exists()
         }
     }
 }

@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "Record",
+  "name": "TestRecord",
   "namespace": "com.bakdata",
   "fields": [
     {
