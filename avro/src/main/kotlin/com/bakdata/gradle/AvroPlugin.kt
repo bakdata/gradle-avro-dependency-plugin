@@ -58,9 +58,11 @@ class AvroPlugin : Plugin<Project> {
     private fun applyInheritance(configurationsWithAvroConfiguration: Map<Configuration, Configuration>) {
         configurationsWithAvroConfiguration.forEach { (originalConfiguration: Configuration, avroConfiguration: Configuration) ->
             originalConfiguration.extendsFrom.forEach { extendsFrom: Configuration ->
-                configurationsWithAvroConfiguration[extendsFrom]?.also { extendsFromAvroConfiguration: Configuration ->
-                    println("Letting ${avroConfiguration.name} extend from ${extendsFromAvroConfiguration.name}")
-                    avroConfiguration.extendsFrom(extendsFromAvroConfiguration)
+                // check if there is an avro configuration for the configuration it extends from
+                val extendsFromAvroConfiguration = configurationsWithAvroConfiguration[extendsFrom]
+                extendsFromAvroConfiguration?.also {
+                    // if yes, avroConfiguration should extend from the respective avro configuration
+                    avroConfiguration.extendsFrom(it)
                 }
             }
         }
