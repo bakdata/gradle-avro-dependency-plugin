@@ -8,7 +8,7 @@ A Gradle plugin that lets you compile Apache Avro schemas to Java classes and su
 This plugin applies the [gradle-avro-plugin](https://github.com/davidmc24/gradle-avro-plugin)
 and adds the capability to reference external Avro schemas in your schema files using dependencies.
 This plugin adds the configurations `avroImplementation` and `testAvroImplementation` to your Gradle project.
-Thereby, you can include external .avsc files without needing to copy them to the project.
+Thereby, you can include external .avsc files without copying them to the project.
 The .avsc files need to be present in the referenced artifact.
 If the java-library plugin is also present, .avsc files will be added to the jar publication,
 thus making it usable as a dependency for the aforementioned configurations.
