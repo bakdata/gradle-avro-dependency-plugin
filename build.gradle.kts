@@ -1,3 +1,6 @@
+import net.researchgate.release.GitAdapter.GitConfig
+import net.researchgate.release.ReleaseExtension
+
 buildscript {
     dependencies {
         classpath("org.gradle.kotlin:plugins:1.2.0")
@@ -82,5 +85,13 @@ if (!version.toString().endsWith("-SNAPSHOT")) {
                 }
             }
         }
+    }
+}
+
+fun ReleaseExtension.git(configure: GitConfig.() -> Unit) = (getProperty("git") as GitConfig).configure()
+
+release {
+    git {
+        requireBranch = "main"
     }
 }
