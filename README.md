@@ -5,6 +5,8 @@
 # gradle-avro-dependency-plugin
 A Gradle plugin that lets you compile Apache Avro schemas to Java classes and supports dependencies.
 
+It is available on the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/com.bakdata.avro).
+
 This plugin applies the [gradle-avro-plugin](https://github.com/davidmc24/gradle-avro-plugin)
 and adds the capability to reference external Avro schemas in your schema files using dependencies.
 This plugin adds the configurations `avroImplementation` and `testAvroImplementation` to your Gradle project.
@@ -19,7 +21,7 @@ With the following `build.gradle.kts` file
 ```
 plugins {
     java
-    id("com.bakdata.avro")
+    id("com.bakdata.avro") version "1.0.0"
 }
 repositories {
     mavenCentral()
