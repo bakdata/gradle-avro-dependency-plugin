@@ -44,3 +44,8 @@ you are able to compile the following Avro schema when placing it in `src/main/a
   ]
 }
 ```
+
+By just using the gradle-avro-plugin, you would not be able to compile the schema
+because the schema for `com.bakdata.kafka.DeadLetter` is not present in the project.
+It is located in the `com.bakdata.kafka:error-handling` dependency
+and our plugin adds it to the classpath of the Avro compiler.
