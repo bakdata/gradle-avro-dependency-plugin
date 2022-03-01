@@ -96,7 +96,7 @@ internal class AvroPluginIntegrationTest {
     }
 
     @Test
-    fun shouldCacje(@TempDir testProjectDir: Path) {
+    fun shouldCache(@TempDir testProjectDir: Path) {
         Files.writeString(
             testProjectDir.resolve("build.gradle.kts"), """
             plugins {

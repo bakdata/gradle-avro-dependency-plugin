@@ -38,14 +38,14 @@ import org.junit.jupiter.api.Test
 import java.io.File
 
 internal class AvroPluginTest {
-    fun taskWithName(name: String): Condition<Task> = Condition({ it.name == name }, "Task with name $name")
-    fun configurationWithName(name: String): Condition<Configuration> =
+    private fun taskWithName(name: String): Condition<Task> = Condition({ it.name == name }, "Task with name $name")
+    private fun configurationWithName(name: String): Condition<Configuration> =
         Condition({ it.name == name }, "Configuration with name $name")
 
-    fun folderWithName(name: String): Condition<File> =
+    private fun folderWithName(name: String): Condition<File> =
         Condition({ it.path.endsWith(name.replace("/", File.separator)) }, "File with name $name")
 
-    fun Project.evaluate() {
+    private fun Project.evaluate() {
         (this as DefaultProject).evaluate()
     }
 

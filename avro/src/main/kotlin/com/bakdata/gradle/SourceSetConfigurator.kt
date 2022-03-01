@@ -64,7 +64,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
         this.avroOutputs = generateAvroJava.outputs.files
     }
 
-    fun configure(): List<Pair<Configuration, Configuration>> {
+    fun configure(): List<Pair<Configuration, ConfigWithGenerateTask>> {
         val compileJava: JavaCompile = project.tasks.named(sourceSet.compileJavaTaskName, JavaCompile::class.java).get()
         compileJava.dependsOn(deleteExternalJava)
 
@@ -81,14 +81,14 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
 
     private fun ConfigurationContainer.setupConfiguration(
         configurationName: String
-    ): Pair<Configuration, Configuration>? {
+    ): Pair<Configuration, ConfigWithGenerateTask>? {
         return findByName(configurationName)?.let { configuration: Configuration ->
             val name: String = sourceSet.getConfigurationName("avro", configurationName)
             val avroConfiguration: Configuration = create(name)
             configuration.setupConfiguration(
                 avroConfiguration
             )
-            configuration to avroConfiguration
+            configuration to ConfigWithGenerateTask(avroConfiguration, generateAvroJava)
         }
     }
 
@@ -96,18 +96,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
         avroConfiguration: Configuration
     ) {
         extendsFrom(avroConfiguration)
-        generateAvroJava.addSources(avroConfiguration)
         configureDeleteExternalJava.configureCompilation(avroConfiguration)
-    }
-
-    private fun GenerateAvroJavaTask.addSources(
-        avroConfiguration: Configuration
-    ) {
-        avroConfiguration.map { file: File ->
-            project.zipTree(file).files
-        }.forEach {
-            source(it)
-        }
     }
 
     private fun Task.configureCompilation(
