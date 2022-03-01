@@ -36,22 +36,21 @@ class AvroPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.plugins.apply("com.github.davidmc24.gradle.plugin.avro")
         val sourceSets: SourceSetContainer = project.getSourceSets()
-        val configurationsWithAvroConfiguration: Map<Configuration, ConfigWithGenerateTask> = sourceSets
+        val configurationsWithAvroConfiguration: Map<Configuration, Configuration> = sourceSets
             .flatMap { sourceSet: SourceSet ->
                 SourceSetConfigurator(project, sourceSet).configure()
             }.toMap()
         applyInheritance(configurationsWithAvroConfiguration)
-        configurationsWithAvroConfiguration.values.forEach(ConfigWithGenerateTask::addSources)
     }
 
-    private fun applyInheritance(configurationsWithAvroConfiguration: Map<Configuration, ConfigWithGenerateTask>) {
-        configurationsWithAvroConfiguration.forEach { (originalConfiguration: Configuration, configWithGenerateTask: ConfigWithGenerateTask) ->
+    private fun applyInheritance(configurationsWithAvroConfiguration: Map<Configuration, Configuration>) {
+        configurationsWithAvroConfiguration.forEach { (originalConfiguration: Configuration, avroConfiguration: Configuration) ->
             originalConfiguration.extendsFrom.forEach { extendsFrom: Configuration ->
                 // check if there is an avro configuration for the configuration it extends from
                 val extendsFromAvroConfiguration = configurationsWithAvroConfiguration[extendsFrom]
                 extendsFromAvroConfiguration?.also {
                     // if yes, avroConfiguration should extend from the respective avro configuration
-                    configWithGenerateTask.avroConfiguration.extendsFrom(it.avroConfiguration)
+                    avroConfiguration.extendsFrom(it)
                 }
             }
         }
