@@ -47,7 +47,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     private val generateAvroJava: GenerateAvroJavaTask
     private val configureDeleteExternalJava: Task
     private val deleteExternalJava: Delete
-    private val configureCopyAvro: Task
+    private val configureGenerateAvroJava: Task
     private val avroOutputs: FileCollection
 
     init {
@@ -64,10 +64,10 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
                 dependsOn(configureDeleteExternalJava)
                 group = generateAvroJava.group
             }
-        this.configureCopyAvro = project.task(sourceSet.getTaskName("configureGenerate", AVRO_JAVA)) {
+        this.configureGenerateAvroJava = project.task(sourceSet.getTaskName("configureGenerate", AVRO_JAVA)) {
             group = generateAvroJava.group
         }
-        generateAvroJava.dependsOn(configureCopyAvro)
+        generateAvroJava.dependsOn(configureGenerateAvroJava)
         this.avroOutputs = generateAvroJava.outputs.files
     }
 
@@ -110,8 +110,8 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     private fun addSources(
         avroConfiguration: Configuration
     ) {
-        configureCopyAvro.dependsOn(avroConfiguration)
-        configureCopyAvro.doLast {
+        configureGenerateAvroJava.dependsOn(avroConfiguration)
+        configureGenerateAvroJava.doLast {
             avroConfiguration.map { file: File ->
                 project.zipTree(file).files
             }.forEach { files: Set<File> ->
