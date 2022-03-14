@@ -18,7 +18,7 @@ resources:
   repositories:
     - repository: templates
       type: github
-      ref: tmp/upload-snapshot
+      ref: tmp/upload-gradle-plugin
       name: bakdata/bakdata-project-templates
       endpoint: bot
 
