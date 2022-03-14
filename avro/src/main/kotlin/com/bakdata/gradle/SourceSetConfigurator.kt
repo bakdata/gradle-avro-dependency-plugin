@@ -84,6 +84,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     fun configure(): List<Pair<Configuration, Configuration>> {
         val compileJava: JavaCompile = project.tasks.named(sourceSet.compileJavaTaskName, JavaCompile::class.java).get()
         compileJava.dependsOn(deleteExternalJava)
+        println("Setting up ${this.sourceSet}")
 
         with(project.configurations) {
             registerResources(sourceSet)
@@ -99,7 +100,9 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     private fun ConfigurationContainer.setupConfiguration(
         configurationName: String
     ): Pair<Configuration, Configuration>? {
+        println("Setting up config $configurationName")
         return findByName(configurationName)?.let { configuration: Configuration ->
+            println("Found config $configuration")
             val name: String = sourceSet.getConfigurationName("avro", configurationName)
             val avroConfiguration: Configuration = create(name)
             configuration.setupConfiguration(

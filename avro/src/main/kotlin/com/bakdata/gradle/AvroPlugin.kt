@@ -35,6 +35,8 @@ class AvroPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.plugins.apply("com.github.davidmc24.gradle.plugin.avro")
+        val findPlugin: Plugin<Any>? = project.plugins.findPlugin("java-library")
+        findPlugin.also { println("Found ${it}") }
         val sourceSets: SourceSetContainer = project.getSourceSets()
         val configurationsWithAvroConfiguration: Map<Configuration, Configuration> = sourceSets
             .flatMap { sourceSet: SourceSet ->
