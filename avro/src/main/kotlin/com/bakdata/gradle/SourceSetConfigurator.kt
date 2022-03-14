@@ -133,6 +133,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
                     copyAvro.project.zipTree(file)
                 }) {
                 include("**/*.avsc")
+                duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             }
             copyAvro.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             copyAvro.into(externalAvroDir)
