@@ -30,6 +30,7 @@ import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.file.Directory
+import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Copy
@@ -130,6 +131,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
                 }) {
                 include("**/*.avsc")
             }
+            copyAvro.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             copyAvro.into(externalAvroDir)
             copyAvro.includeEmptyDirs = false
         }
