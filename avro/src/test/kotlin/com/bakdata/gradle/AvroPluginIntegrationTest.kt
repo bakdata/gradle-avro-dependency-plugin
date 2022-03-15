@@ -82,9 +82,11 @@ internal class AvroPluginIntegrationTest {
                 .haveExactly(1, taskWithPathAndOutcome(":configureDeleteExternalJava", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":deleteExternalJava", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":configureGenerateAvroJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":generateAvroJava", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":configureDeleteTestExternalJava", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":deleteTestExternalJava", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":configureGenerateTestAvroJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":generateTestAvroJava", TaskOutcome.SUCCESS))
             val javaClasses = testProjectDir.resolve("build/classes/java")
             softly.assertThat(javaClasses.resolve("main/com/bakdata/kafka/DeadLetter.class").toFile())
                 .doesNotExist()
@@ -143,7 +145,14 @@ internal class AvroPluginIntegrationTest {
 
         SoftAssertions.assertSoftly { softly ->
             softly.assertThat(result.tasks)
+                .haveExactly(1, taskWithPathAndOutcome(":configureDeleteExternalJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":deleteExternalJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":configureGenerateAvroJava", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":generateAvroJava", TaskOutcome.FROM_CACHE))
+                .haveExactly(1, taskWithPathAndOutcome(":configureDeleteTestExternalJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":deleteTestExternalJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":configureGenerateTestAvroJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":generateTestAvroJava", TaskOutcome.FROM_CACHE))
         }
     }
 }
