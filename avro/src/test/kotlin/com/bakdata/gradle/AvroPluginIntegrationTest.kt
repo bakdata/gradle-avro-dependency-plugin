@@ -81,12 +81,12 @@ internal class AvroPluginIntegrationTest {
             softly.assertThat(result.tasks)
                 .haveExactly(1, taskWithPathAndOutcome(":configureDeleteExternalJava", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":deleteExternalJava", TaskOutcome.SUCCESS))
-                .haveExactly(1, taskWithPathAndOutcome(":configureCopyExternalAvroResources", TaskOutcome.SUCCESS))
-                .haveExactly(1, taskWithPathAndOutcome(":copyExternalAvroResources", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":configureGenerateAvroJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":generateAvroJava", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":configureDeleteTestExternalJava", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":deleteTestExternalJava", TaskOutcome.SUCCESS))
-                .haveExactly(1, taskWithPathAndOutcome(":configureCopyTestExternalAvroResources", TaskOutcome.SUCCESS))
-                .haveExactly(1, taskWithPathAndOutcome(":copyTestExternalAvroResources", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":configureGenerateTestAvroJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":generateTestAvroJava", TaskOutcome.SUCCESS))
             val javaClasses = testProjectDir.resolve("build/classes/java")
             softly.assertThat(javaClasses.resolve("main/com/bakdata/kafka/DeadLetter.class").toFile())
                 .doesNotExist()
@@ -96,6 +96,63 @@ internal class AvroPluginIntegrationTest {
                 .doesNotExist()
             softly.assertThat(javaClasses.resolve("test/com/bakdata/TestRecord.class").toFile())
                 .exists()
+        }
+    }
+
+    @Test
+    fun shouldCache(@TempDir testProjectDir: Path) {
+        Files.writeString(
+            testProjectDir.resolve("build.gradle.kts"), """
+            plugins {
+                java
+                id("com.bakdata.avro")
+            }
+            repositories {
+                mavenCentral()
+            }
+            dependencies {
+                avroImplementation(group = "com.bakdata.kafka", name = "error-handling", version = "1.2.2")
+            }
+        """.trimIndent()
+        )
+        Files.writeString(
+            testProjectDir.resolve("gradle.properties"), """
+            org.gradle.caching=true
+        """.trimIndent()
+        )
+        Files.createDirectories(testProjectDir.resolve("src/main/avro/"))
+        Files.copy(
+            AvroPluginIntegrationTest::class.java.getResourceAsStream("/Record.avsc"),
+            testProjectDir.resolve("src/main/avro/Record.avsc")
+        )
+        Files.createDirectories(testProjectDir.resolve("src/test/avro/"))
+        Files.copy(
+            AvroPluginIntegrationTest::class.java.getResourceAsStream("/TestRecord.avsc"),
+            testProjectDir.resolve("src/test/avro/TestRecord.avsc")
+        )
+
+        GradleRunner.create()
+            .withProjectDir(testProjectDir.toFile())
+            .withArguments("build")
+            .withProjectPluginClassPath()
+            .build()
+
+        val result = GradleRunner.create()
+            .withProjectDir(testProjectDir.toFile())
+            .withArguments("build")
+            .withProjectPluginClassPath()
+            .build()
+
+        SoftAssertions.assertSoftly { softly ->
+            softly.assertThat(result.tasks)
+                .haveExactly(1, taskWithPathAndOutcome(":configureDeleteExternalJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":deleteExternalJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":configureGenerateAvroJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":generateAvroJava", TaskOutcome.FROM_CACHE))
+                .haveExactly(1, taskWithPathAndOutcome(":configureDeleteTestExternalJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":deleteTestExternalJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":configureGenerateTestAvroJava", TaskOutcome.SUCCESS))
+                .haveExactly(1, taskWithPathAndOutcome(":generateTestAvroJava", TaskOutcome.FROM_CACHE))
         }
     }
 }

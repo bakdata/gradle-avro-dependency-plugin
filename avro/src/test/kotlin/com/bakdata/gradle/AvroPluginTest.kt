@@ -38,14 +38,14 @@ import org.junit.jupiter.api.Test
 import java.io.File
 
 internal class AvroPluginTest {
-    fun taskWithName(name: String): Condition<Task> = Condition({ it.name == name }, "Task with name $name")
-    fun configurationWithName(name: String): Condition<Configuration> =
+    private fun taskWithName(name: String): Condition<Task> = Condition({ it.name == name }, "Task with name $name")
+    private fun configurationWithName(name: String): Condition<Configuration> =
         Condition({ it.name == name }, "Configuration with name $name")
 
-    fun folderWithName(name: String): Condition<File> =
+    private fun folderWithName(name: String): Condition<File> =
         Condition({ it.path.endsWith(name.replace("/", File.separator)) }, "File with name $name")
 
-    fun Project.evaluate() {
+    private fun Project.evaluate() {
         (this as DefaultProject).evaluate()
     }
 
@@ -65,12 +65,10 @@ internal class AvroPluginTest {
             softly.assertThat(project.tasks)
                 .haveExactly(1, taskWithName("configureDeleteExternalJava"))
                 .haveExactly(1, taskWithName("deleteExternalJava"))
-                .haveExactly(1, taskWithName("configureCopyExternalAvroResources"))
-                .haveExactly(1, taskWithName("copyExternalAvroResources"))
+                .haveExactly(1, taskWithName("configureGenerateAvroJava"))
                 .haveExactly(1, taskWithName("configureDeleteTestExternalJava"))
                 .haveExactly(1, taskWithName("deleteTestExternalJava"))
-                .haveExactly(1, taskWithName("configureCopyTestExternalAvroResources"))
-                .haveExactly(1, taskWithName("copyTestExternalAvroResources"))
+                .haveExactly(1, taskWithName("configureGenerateTestAvroJava"))
             softly.assertThat(project.configurations)
                 .haveExactly(1, configurationWithName("avroImplementation"))
                 .haveExactly(0, configurationWithName("avroApi"))
@@ -110,12 +108,10 @@ internal class AvroPluginTest {
             softly.assertThat(project.tasks)
                 .haveExactly(1, taskWithName("configureDeleteExternalJava"))
                 .haveExactly(1, taskWithName("deleteExternalJava"))
-                .haveExactly(1, taskWithName("configureCopyExternalAvroResources"))
-                .haveExactly(1, taskWithName("copyExternalAvroResources"))
+                .haveExactly(1, taskWithName("configureGenerateAvroJava"))
                 .haveExactly(1, taskWithName("configureDeleteTestExternalJava"))
                 .haveExactly(1, taskWithName("deleteTestExternalJava"))
-                .haveExactly(1, taskWithName("configureCopyTestExternalAvroResources"))
-                .haveExactly(1, taskWithName("copyTestExternalAvroResources"))
+                .haveExactly(1, taskWithName("configureGenerateTestAvroJava"))
             softly.assertThat(project.configurations)
                 .haveExactly(1, configurationWithName("avroImplementation"))
                 .haveExactly(1, configurationWithName("avroApi"))
