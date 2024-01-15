@@ -31,6 +31,7 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DuplicatesStrategy
+import org.gradle.api.file.FileTree
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.SourceSet
@@ -39,8 +40,6 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
 private const val EXTERNAL_AVRO_RESOURCES = "externalAvroResources"
-
-private const val EXTERNAL_JAVA = "externalJava"
 
 class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     private val project: Project
@@ -127,13 +126,14 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
             val exclusions: List<String> = avroConfiguration.findExclusions()
             // empty exclusions would delete whole folder
             if (exclusions.isNotEmpty()) {
-                outputs.files.forEach { file: File ->
-                    println("Found output file $file")
-                    project.fileTree(file) {
+                outputs.files.forEach { outputFile: File ->
+                    println("Found output file $outputFile")
+                    val filesToDelete: FileTree = project.fileTree(outputFile) {
                         include(exclusions)
-                    }.files.forEach { f: File ->
-                        println("Found file to delete $file")
-                        f.delete()
+                    }
+                    filesToDelete.files.forEach { fileToDelete: File ->
+                        println("Found file to delete $fileToDelete")
+                        fileToDelete.delete()
                     }
                 }
             }
