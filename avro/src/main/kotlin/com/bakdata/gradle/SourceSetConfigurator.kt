@@ -1,7 +1,7 @@
 /*
- * The MIT License
+ * MIT License
  *
- * Copyright (c) 2022 bakdata GmbH
+ * Copyright (c) 2024 bakdata
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,6 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.SourceSet
-import org.gradle.api.tasks.compile.JavaCompile
 import java.io.File
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
@@ -61,15 +60,15 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
         this.sourceSet = sourceSet
         this.generateAvroJava =
             project.tasks.named(sourceSet.getTaskName("generate", "avroJava"), GenerateAvroJavaTask::class.java).get()
-        this.configureDeleteExternalJava = project.task(sourceSet.getTaskName("configureDelete", EXTERNAL_JAVA)) {
-            dependsOn(generateAvroJava)
-            group = generateAvroJava.group
-        }
         this.deleteExternalJava =
             project.tasks.create(sourceSet.getTaskName("delete", EXTERNAL_JAVA), Delete::class.java) {
-                dependsOn(configureDeleteExternalJava)
                 group = generateAvroJava.group
             }
+        this.configureDeleteExternalJava = project.task(sourceSet.getTaskName("configureDelete", EXTERNAL_JAVA)) {
+            finalizedBy(deleteExternalJava)
+            group = generateAvroJava.group
+        }
+        generateAvroJava.finalizedBy(configureDeleteExternalJava)
         this.externalAvroDir = project.layout.buildDirectory.dir("external-${sourceSet.name}-avro")
         this.configureCopyAvro = project.task(sourceSet.getTaskName("configureCopy", EXTERNAL_AVRO_RESOURCES)) {
             group = generateAvroJava.group
@@ -83,9 +82,6 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     }
 
     fun configure(): List<Pair<Configuration, Configuration>> {
-        val compileJava: JavaCompile = project.tasks.named(sourceSet.compileJavaTaskName, JavaCompile::class.java).get()
-        compileJava.dependsOn(deleteExternalJava)
-
         with(project.configurations) {
             registerResources(sourceSet)
             val configurations: List<String> = sourceSet.getRelevantConfigurations()
