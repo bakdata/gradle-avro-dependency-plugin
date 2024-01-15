@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2022 bakdata GmbH
+ * Copyright (c) 2024 bakdata
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -77,6 +77,7 @@ internal class AvroPluginIntegrationTest {
             .withArguments("build")
             .withProjectPluginClassPath()
             .build()
+        println(result.output)
 
         SoftAssertions.assertSoftly { softly ->
             softly.assertThat(result.tasks)
