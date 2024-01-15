@@ -31,10 +31,8 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DuplicatesStrategy
-import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Copy
-import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.SourceSet
 import java.io.File
 import java.util.zip.ZipEntry
@@ -48,27 +46,15 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     private val project: Project
     private val sourceSet: SourceSet
     private val generateAvroJava: GenerateAvroJavaTask
-    private val configureDeleteExternalJava: Task
-    private val deleteExternalJava: Delete
     private val externalAvroDir: Provider<Directory>
     private val configureCopyAvro: Task
     private val copyAvro: Copy
-    private val avroOutputs: FileCollection
 
     init {
         this.project = project
         this.sourceSet = sourceSet
         this.generateAvroJava =
             project.tasks.named(sourceSet.getTaskName("generate", "avroJava"), GenerateAvroJavaTask::class.java).get()
-        this.configureDeleteExternalJava = project.task(sourceSet.getTaskName("configureDelete", EXTERNAL_JAVA)) {
-            group = generateAvroJava.group
-        }
-        this.deleteExternalJava =
-            project.tasks.create(sourceSet.getTaskName("delete", EXTERNAL_JAVA), Delete::class.java) {
-                dependsOn(configureDeleteExternalJava)
-                group = generateAvroJava.group
-            }
-        this.generateAvroJava.finalizedBy(deleteExternalJava)
         this.externalAvroDir = project.layout.buildDirectory.dir("external-${sourceSet.name}-avro")
         this.configureCopyAvro = project.task(sourceSet.getTaskName("configureCopy", EXTERNAL_AVRO_RESOURCES)) {
             group = generateAvroJava.group
@@ -78,7 +64,6 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
                 dependsOn(configureCopyAvro)
                 group = generateAvroJava.group
             }
-        this.avroOutputs = generateAvroJava.outputs.files
     }
 
     fun configure(): List<Pair<Configuration, Configuration>> {
@@ -111,7 +96,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     ) {
         extendsFrom(avroConfiguration)
         generateAvroJava.addSources(avroConfiguration)
-        configureDeleteExternalJava.configureCompilation(avroConfiguration)
+        generateAvroJava.configureCompilation(avroConfiguration)
     }
 
     private fun GenerateAvroJavaTask.addSources(
@@ -135,18 +120,16 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
         source(externalAvroDir)
     }
 
-    private fun Task.configureCompilation(
+    private fun GenerateAvroJavaTask.configureCompilation(
         avroConfiguration: Configuration
     ) {
-        dependsOn(avroConfiguration)
         doLast {
             val exclusions: List<String> = avroConfiguration.findExclusions()
             // empty exclusions would delete whole folder
             if (exclusions.isNotEmpty()) {
-                avroOutputs.files.forEach { file: File ->
-                    deleteExternalJava.delete(deleteExternalJava.project.fileTree(file) {
-                        include(exclusions)
-                    })
+                outputs.files.forEach { file: File ->
+                    println("Found file $file")
+                    file.deleteRecursively()
                 }
             }
         }
