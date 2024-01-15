@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2022 bakdata GmbH
+ * Copyright (c) 2024 bakdata
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -63,12 +63,8 @@ internal class AvroPluginTest {
             softly.assertThat(project.plugins.hasPlugin("com.github.davidmc24.gradle.plugin.avro"))
                 .isTrue
             softly.assertThat(project.tasks)
-                .haveExactly(1, taskWithName("configureDeleteExternalJava"))
-                .haveExactly(1, taskWithName("deleteExternalJava"))
                 .haveExactly(1, taskWithName("configureCopyExternalAvroResources"))
                 .haveExactly(1, taskWithName("copyExternalAvroResources"))
-                .haveExactly(1, taskWithName("configureDeleteTestExternalJava"))
-                .haveExactly(1, taskWithName("deleteTestExternalJava"))
                 .haveExactly(1, taskWithName("configureCopyTestExternalAvroResources"))
                 .haveExactly(1, taskWithName("copyTestExternalAvroResources"))
             softly.assertThat(project.configurations)
@@ -108,12 +104,8 @@ internal class AvroPluginTest {
             softly.assertThat(project.plugins.hasPlugin("com.github.davidmc24.gradle.plugin.avro"))
                 .isTrue
             softly.assertThat(project.tasks)
-                .haveExactly(1, taskWithName("configureDeleteExternalJava"))
-                .haveExactly(1, taskWithName("deleteExternalJava"))
                 .haveExactly(1, taskWithName("configureCopyExternalAvroResources"))
                 .haveExactly(1, taskWithName("copyExternalAvroResources"))
-                .haveExactly(1, taskWithName("configureDeleteTestExternalJava"))
-                .haveExactly(1, taskWithName("deleteTestExternalJava"))
                 .haveExactly(1, taskWithName("configureCopyTestExternalAvroResources"))
                 .haveExactly(1, taskWithName("copyTestExternalAvroResources"))
             softly.assertThat(project.configurations)

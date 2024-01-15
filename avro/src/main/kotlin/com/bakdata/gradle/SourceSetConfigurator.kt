@@ -120,7 +120,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
         source(externalAvroDir)
     }
 
-    private fun GenerateAvroJavaTask.configureCompilation(
+    private fun Task.configureCompilation(
         avroConfiguration: Configuration
     ) {
         doLast {
@@ -128,8 +128,13 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
             // empty exclusions would delete whole folder
             if (exclusions.isNotEmpty()) {
                 outputs.files.forEach { file: File ->
-                    println("Found file $file")
-                    file.deleteRecursively()
+                    println("Found output file $file")
+                    project.fileTree(file) {
+                        include(exclusions)
+                    }.files.forEach { f: File ->
+                        println("Found file to delete $file")
+                        f.delete()
+                    }
                 }
             }
         }
