@@ -127,12 +127,10 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
             // empty exclusions would delete whole folder
             if (exclusions.isNotEmpty()) {
                 outputs.files.forEach { outputFile: File ->
-                    println("Found output file $outputFile")
                     val filesToDelete: FileTree = project.fileTree(outputFile) {
                         include(exclusions)
                     }
                     filesToDelete.files.forEach { fileToDelete: File ->
-                        println("Found file to delete $fileToDelete")
                         fileToDelete.delete()
                     }
                 }

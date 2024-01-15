@@ -95,3 +95,6 @@ release {
         requireBranch = "main"
     }
 }
+
+val sonarqube by tasks
+sonarqube.enabled = false //FIXME requires Java 17

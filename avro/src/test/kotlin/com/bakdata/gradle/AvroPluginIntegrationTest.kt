@@ -77,7 +77,6 @@ internal class AvroPluginIntegrationTest {
             .withArguments("build")
             .withProjectPluginClassPath()
             .build()
-        println(result.output)
 
         SoftAssertions.assertSoftly { softly ->
             softly.assertThat(result.tasks)
