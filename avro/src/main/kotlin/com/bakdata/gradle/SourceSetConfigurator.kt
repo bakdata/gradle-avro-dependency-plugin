@@ -36,7 +36,6 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.SourceSet
-import org.gradle.api.tasks.compile.JavaCompile
 import java.io.File
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
@@ -62,7 +61,6 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
         this.generateAvroJava =
             project.tasks.named(sourceSet.getTaskName("generate", "avroJava"), GenerateAvroJavaTask::class.java).get()
         this.configureDeleteExternalJava = project.task(sourceSet.getTaskName("configureDelete", EXTERNAL_JAVA)) {
-            dependsOn(generateAvroJava)
             group = generateAvroJava.group
         }
         this.deleteExternalJava =
@@ -70,6 +68,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
                 dependsOn(configureDeleteExternalJava)
                 group = generateAvroJava.group
             }
+        this.generateAvroJava.finalizedBy(deleteExternalJava)
         this.externalAvroDir = project.layout.buildDirectory.dir("external-${sourceSet.name}-avro")
         this.configureCopyAvro = project.task(sourceSet.getTaskName("configureCopy", EXTERNAL_AVRO_RESOURCES)) {
             group = generateAvroJava.group
@@ -83,9 +82,6 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     }
 
     fun configure(): List<Pair<Configuration, Configuration>> {
-        val compileJava: JavaCompile = project.tasks.named(sourceSet.compileJavaTaskName, JavaCompile::class.java).get()
-        compileJava.dependsOn(deleteExternalJava)
-
         with(project.configurations) {
             registerResources(sourceSet)
             val configurations: List<String> = sourceSet.getRelevantConfigurations()
