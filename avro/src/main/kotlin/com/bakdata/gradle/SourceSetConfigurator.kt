@@ -95,12 +95,12 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     ) {
         extendsFrom(avroConfiguration)
         generateAvroJava.addSources(avroConfiguration)
-        generateAvroJava.configureDeletion(avroConfiguration)
     }
 
     private fun GenerateAvroJavaTask.addSources(
         avroConfiguration: Configuration
     ) {
+        val foo = this
         configureCopyAvro.dependsOn(avroConfiguration)
         // copy external avro files to separate build directory.
         // Directly adding zipTree as source breaks caching: https://github.com/gradle/gradle/issues/18382
@@ -114,28 +114,23 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
             copyAvro.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             copyAvro.into(externalAvroDir)
             copyAvro.includeEmptyDirs = false
-        }
-        dependsOn(copyAvro)
-        source(externalAvroDir)
-    }
-
-    private fun Task.configureDeletion(
-        avroConfiguration: Configuration
-    ) {
-        doLast {
-            val exclusions: List<String> = avroConfiguration.findExclusions()
-            // empty exclusions would delete whole folder
-            if (exclusions.isNotEmpty()) {
-                outputs.files.forEach { outputFile: File ->
-                    val filesToDelete: FileTree = project.fileTree(outputFile) {
-                        include(exclusions)
-                    }
-                    filesToDelete.files.forEach { fileToDelete: File ->
-                        fileToDelete.delete()
+            foo.doLast {
+                val exclusions: List<String> = avroConfiguration.findExclusions()
+                // empty exclusions would delete whole folder
+                if (exclusions.isNotEmpty()) {
+                    outputs.files.forEach { outputFile: File ->
+                        val filesToDelete: FileTree = project.fileTree(outputFile) {
+                            include(exclusions)
+                        }
+                        filesToDelete.files.forEach { fileToDelete: File ->
+                            fileToDelete.delete()
+                        }
                     }
                 }
             }
         }
+        dependsOn(copyAvro)
+        source(externalAvroDir)
     }
 
     private fun Configuration.findExclusions() =
