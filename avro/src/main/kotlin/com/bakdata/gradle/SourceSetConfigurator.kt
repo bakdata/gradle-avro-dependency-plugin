@@ -95,7 +95,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     ) {
         extendsFrom(avroConfiguration)
         generateAvroJava.addSources(avroConfiguration)
-        generateAvroJava.configureCompilation(avroConfiguration)
+        generateAvroJava.configureDeletion(avroConfiguration)
     }
 
     private fun GenerateAvroJavaTask.addSources(
@@ -119,7 +119,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
         source(externalAvroDir)
     }
 
-    private fun Task.configureCompilation(
+    private fun Task.configureDeletion(
         avroConfiguration: Configuration
     ) {
         doLast {
