@@ -100,7 +100,6 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     private fun GenerateAvroJavaTask.addSources(
         avroConfiguration: Configuration
     ) {
-        val foo = this
         configureCopyAvro.dependsOn(avroConfiguration)
         // copy external avro files to separate build directory.
         // Directly adding zipTree as source breaks caching: https://github.com/gradle/gradle/issues/18382
@@ -114,7 +113,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
             copyAvro.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             copyAvro.into(externalAvroDir)
             copyAvro.includeEmptyDirs = false
-            foo.doLast {
+            this@addSources.doLast {
                 val exclusions: List<String> = avroConfiguration.findExclusions()
                 // empty exclusions would delete whole folder
                 if (exclusions.isNotEmpty()) {
