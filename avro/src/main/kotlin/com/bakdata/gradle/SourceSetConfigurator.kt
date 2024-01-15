@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2022 bakdata GmbH
+ * Copyright (c) 2024 bakdata
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,45 +31,29 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DuplicatesStrategy
-import org.gradle.api.file.FileCollection
+import org.gradle.api.file.FileTree
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Copy
-import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.SourceSet
-import org.gradle.api.tasks.compile.JavaCompile
 import java.io.File
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
 private const val EXTERNAL_AVRO_RESOURCES = "externalAvroResources"
 
-private const val EXTERNAL_JAVA = "externalJava"
-
 class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     private val project: Project
     private val sourceSet: SourceSet
     private val generateAvroJava: GenerateAvroJavaTask
-    private val configureDeleteExternalJava: Task
-    private val deleteExternalJava: Delete
     private val externalAvroDir: Provider<Directory>
     private val configureCopyAvro: Task
     private val copyAvro: Copy
-    private val avroOutputs: FileCollection
 
     init {
         this.project = project
         this.sourceSet = sourceSet
         this.generateAvroJava =
             project.tasks.named(sourceSet.getTaskName("generate", "avroJava"), GenerateAvroJavaTask::class.java).get()
-        this.configureDeleteExternalJava = project.task(sourceSet.getTaskName("configureDelete", EXTERNAL_JAVA)) {
-            dependsOn(generateAvroJava)
-            group = generateAvroJava.group
-        }
-        this.deleteExternalJava =
-            project.tasks.create(sourceSet.getTaskName("delete", EXTERNAL_JAVA), Delete::class.java) {
-                dependsOn(configureDeleteExternalJava)
-                group = generateAvroJava.group
-            }
         this.externalAvroDir = project.layout.buildDirectory.dir("external-${sourceSet.name}-avro")
         this.configureCopyAvro = project.task(sourceSet.getTaskName("configureCopy", EXTERNAL_AVRO_RESOURCES)) {
             group = generateAvroJava.group
@@ -79,13 +63,9 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
                 dependsOn(configureCopyAvro)
                 group = generateAvroJava.group
             }
-        this.avroOutputs = generateAvroJava.outputs.files
     }
 
     fun configure(): List<Pair<Configuration, Configuration>> {
-        val compileJava: JavaCompile = project.tasks.named(sourceSet.compileJavaTaskName, JavaCompile::class.java).get()
-        compileJava.dependsOn(deleteExternalJava)
-
         with(project.configurations) {
             registerResources(sourceSet)
             val configurations: List<String> = sourceSet.getRelevantConfigurations()
@@ -115,7 +95,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     ) {
         extendsFrom(avroConfiguration)
         generateAvroJava.addSources(avroConfiguration)
-        configureDeleteExternalJava.configureCompilation(avroConfiguration)
+        generateAvroJava.configureDeletion(avroConfiguration)
     }
 
     private fun GenerateAvroJavaTask.addSources(
@@ -139,18 +119,20 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
         source(externalAvroDir)
     }
 
-    private fun Task.configureCompilation(
+    private fun Task.configureDeletion(
         avroConfiguration: Configuration
     ) {
-        dependsOn(avroConfiguration)
         doLast {
             val exclusions: List<String> = avroConfiguration.findExclusions()
             // empty exclusions would delete whole folder
             if (exclusions.isNotEmpty()) {
-                avroOutputs.files.forEach { file: File ->
-                    deleteExternalJava.delete(deleteExternalJava.project.fileTree(file) {
+                outputs.files.forEach { outputFile: File ->
+                    val filesToDelete: FileTree = project.fileTree(outputFile) {
                         include(exclusions)
-                    })
+                    }
+                    filesToDelete.files.forEach { fileToDelete: File ->
+                        fileToDelete.delete()
+                    }
                 }
             }
         }

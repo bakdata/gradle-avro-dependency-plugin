@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2022 bakdata GmbH
+ * Copyright (c) 2024 bakdata
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -80,12 +80,8 @@ internal class AvroPluginIntegrationTest {
 
         SoftAssertions.assertSoftly { softly ->
             softly.assertThat(result.tasks)
-                .haveExactly(1, taskWithPathAndOutcome(":configureDeleteExternalJava", TaskOutcome.SUCCESS))
-                .haveExactly(1, taskWithPathAndOutcome(":deleteExternalJava", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":configureCopyExternalAvroResources", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":copyExternalAvroResources", TaskOutcome.SUCCESS))
-                .haveExactly(1, taskWithPathAndOutcome(":configureDeleteTestExternalJava", TaskOutcome.SUCCESS))
-                .haveExactly(1, taskWithPathAndOutcome(":deleteTestExternalJava", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":configureCopyTestExternalAvroResources", TaskOutcome.SUCCESS))
                 .haveExactly(1, taskWithPathAndOutcome(":copyTestExternalAvroResources", TaskOutcome.SUCCESS))
             val javaClasses = testProjectDir.resolve("build/classes/java")
