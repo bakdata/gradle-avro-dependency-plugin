@@ -116,8 +116,8 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
             val exclusions: List<String> = avroConfiguration.findExclusions()
             // empty exclusions would delete whole folder
             if (exclusions.isNotEmpty()) {
-                outputs.files.forEach { outputFile: File ->
-                    val filesToDelete: FileTree = project.fileTree(outputFile) {
+                this@addSources.outputs.files.forEach { outputFile: File ->
+                    val filesToDelete: FileTree = this@addSources.project.fileTree(outputFile) {
                         include(exclusions)
                     }
                     this@addSources.doLast {
