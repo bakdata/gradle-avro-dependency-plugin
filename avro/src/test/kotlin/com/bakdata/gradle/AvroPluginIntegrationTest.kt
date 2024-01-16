@@ -95,4 +95,63 @@ internal class AvroPluginIntegrationTest {
                 .exists()
         }
     }
+
+    @Test
+    fun shouldCache(@TempDir testProjectDir: Path) {
+        Files.writeString(
+            testProjectDir.resolve("build.gradle.kts"), """
+            plugins {
+                java
+                id("com.bakdata.avro")
+            }
+            repositories {
+                mavenCentral()
+            }
+            dependencies {
+                implementation(group ="org.apache.avro", name = "avro", version = "1.11.0")
+                avroImplementation(group = "com.bakdata.kafka", name = "error-handling", version = "1.2.2")
+            }
+        """.trimIndent()
+        )
+        Files.writeString(
+            testProjectDir.resolve("gradle.properties"), """
+            org.gradle.caching=true
+        """.trimIndent()
+        )
+        Files.createDirectories(testProjectDir.resolve("src/main/avro/"))
+        Files.copy(
+            AvroPluginIntegrationTest::class.java.getResourceAsStream("/Record.avsc"),
+            testProjectDir.resolve("src/main/avro/Record.avsc")
+        )
+        Files.createDirectories(testProjectDir.resolve("src/test/avro/"))
+        Files.copy(
+            AvroPluginIntegrationTest::class.java.getResourceAsStream("/TestRecord.avsc"),
+            testProjectDir.resolve("src/test/avro/TestRecord.avsc")
+        )
+
+        GradleRunner.create()
+            .withProjectDir(testProjectDir.toFile())
+            .withArguments("build")
+            .withProjectPluginClassPath()
+            .build()
+
+        GradleRunner.create()
+            .withProjectDir(testProjectDir.toFile())
+            .withArguments("clean")
+            .withProjectPluginClassPath()
+            .build()
+
+        val result = GradleRunner.create()
+            .withProjectDir(testProjectDir.toFile())
+            .withArguments("build")
+            .withProjectPluginClassPath()
+            .build()
+
+        SoftAssertions.assertSoftly { softly ->
+            println(result.tasks)
+            softly.assertThat(result.tasks)
+                .haveExactly(1, taskWithPathAndOutcome(":generateAvroJava", TaskOutcome.FROM_CACHE))
+                .haveExactly(1, taskWithPathAndOutcome(":generateTestAvroJava", TaskOutcome.FROM_CACHE))
+        }
+    }
 }

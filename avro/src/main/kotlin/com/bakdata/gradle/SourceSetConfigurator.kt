@@ -94,11 +94,10 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
         avroConfiguration: Configuration
     ) {
         extendsFrom(avroConfiguration)
-        generateAvroJava.addSources(avroConfiguration)
-        generateAvroJava.configureDeletion(avroConfiguration)
+        addSources(avroConfiguration)
     }
 
-    private fun GenerateAvroJavaTask.addSources(
+    private fun addSources(
         avroConfiguration: Configuration
     ) {
         configureCopyAvro.dependsOn(avroConfiguration)
@@ -114,28 +113,23 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
             copyAvro.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             copyAvro.into(externalAvroDir)
             copyAvro.includeEmptyDirs = false
-        }
-        dependsOn(copyAvro)
-        source(externalAvroDir)
-    }
-
-    private fun Task.configureDeletion(
-        avroConfiguration: Configuration
-    ) {
-        doLast {
             val exclusions: List<String> = avroConfiguration.findExclusions()
             // empty exclusions would delete whole folder
             if (exclusions.isNotEmpty()) {
-                outputs.files.forEach { outputFile: File ->
-                    val filesToDelete: FileTree = project.fileTree(outputFile) {
-                        include(exclusions)
-                    }
-                    filesToDelete.files.forEach { fileToDelete: File ->
-                        fileToDelete.delete()
+                with(generateAvroJava) {
+                    outputs.files.forEach { outputFile: File ->
+                        val filesToDelete: FileTree = project.fileTree(outputFile) {
+                            include(exclusions)
+                        }
+                        doLast {
+                            project.delete(filesToDelete)
+                        }
                     }
                 }
             }
         }
+        generateAvroJava.dependsOn(copyAvro)
+        generateAvroJava.source(externalAvroDir)
     }
 
     private fun Configuration.findExclusions() =
