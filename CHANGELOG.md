@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.3.1](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.3.1) (2024-01-16)
+[Full Changelog](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.3.0...1.3.1)
+
+**Merged pull requests:**
+
+- Improve caching [\#8](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/8) ([@philipp94831](https://github.com/philipp94831))
+
 ## [1.3.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.3.0) (2024-01-15)
 [Full Changelog](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.2.1...1.3.0)
 
