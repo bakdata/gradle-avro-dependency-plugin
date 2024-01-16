@@ -121,9 +121,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
                         val filesToDelete: FileTree = project.fileTree(outputFile) {
                             include(exclusions)
                         }
-                        filesToDelete.files.forEach { fileToDelete: File ->
-                            fileToDelete.delete()
-                        }
+                        project.delete(filesToDelete)
                     }
                 }
             }
