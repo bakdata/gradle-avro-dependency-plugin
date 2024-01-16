@@ -94,10 +94,10 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
         avroConfiguration: Configuration
     ) {
         extendsFrom(avroConfiguration)
-        generateAvroJava.addSources(avroConfiguration)
+        addSources(avroConfiguration)
     }
 
-    private fun GenerateAvroJavaTask.addSources(
+    private fun addSources(
         avroConfiguration: Configuration
     ) {
         configureCopyAvro.dependsOn(avroConfiguration)
@@ -116,7 +116,7 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
             val exclusions: List<String> = avroConfiguration.findExclusions()
             // empty exclusions would delete whole folder
             if (exclusions.isNotEmpty()) {
-                with(this@addSources) {
+                with(generateAvroJava) {
                     outputs.files.forEach { outputFile: File ->
                         val filesToDelete: FileTree = project.fileTree(outputFile) {
                             include(exclusions)
@@ -128,8 +128,8 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
                 }
             }
         }
-        dependsOn(copyAvro)
-        source(externalAvroDir)
+        generateAvroJava.dependsOn(copyAvro)
+        generateAvroJava.source(externalAvroDir)
     }
 
     private fun Configuration.findExclusions() =
