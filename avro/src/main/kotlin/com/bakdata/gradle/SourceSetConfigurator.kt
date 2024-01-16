@@ -113,14 +113,14 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
             copyAvro.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             copyAvro.into(externalAvroDir)
             copyAvro.includeEmptyDirs = false
-            this@addSources.doLast {
-                val exclusions: List<String> = avroConfiguration.findExclusions()
-                // empty exclusions would delete whole folder
-                if (exclusions.isNotEmpty()) {
-                    outputs.files.forEach { outputFile: File ->
-                        val filesToDelete: FileTree = project.fileTree(outputFile) {
-                            include(exclusions)
-                        }
+            val exclusions: List<String> = avroConfiguration.findExclusions()
+            // empty exclusions would delete whole folder
+            if (exclusions.isNotEmpty()) {
+                outputs.files.forEach { outputFile: File ->
+                    val filesToDelete: FileTree = project.fileTree(outputFile) {
+                        include(exclusions)
+                    }
+                    this@addSources.doLast {
                         project.delete(filesToDelete)
                     }
                 }
