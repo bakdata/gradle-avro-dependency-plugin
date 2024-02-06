@@ -21,3 +21,5 @@ jobs:
       ossrh-password: ${{ secrets.SONATYPE_OSSRH_PASSWORD }}
       github-username: ${{ secrets.GH_USERNAME }}
       github-token: ${{ secrets.GH_TOKEN }}
+      gradle-publish-key: ${{ secrets.GRADLE_PLUGIN_PUBLISH_KEY }}
+      gradle-publish-secret: ${{ secrets.GRADLE_PLUGIN_PUBLISH_SECRET }}
