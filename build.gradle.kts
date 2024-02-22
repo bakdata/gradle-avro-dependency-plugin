@@ -1,19 +1,16 @@
-import net.researchgate.release.GitAdapter.GitConfig
-import net.researchgate.release.ReleaseExtension
-
 buildscript {
     dependencies {
-        classpath("org.gradle.kotlin:plugins:1.3.3")
+        classpath("org.gradle.kotlin:gradle-kotlin-dsl-plugins:4.3.0")
         classpath("com.gradle.publish:plugin-publish-plugin:0.11.0")
     }
 }
 
 plugins {
     // release
-    id("net.researchgate.release") version "2.8.1"
+    id("net.researchgate.release") version "3.0.2"
     id("com.bakdata.sonar") version "1.1.17"
     id("com.bakdata.sonatype") version "1.1.14"
-    id("org.hildan.github.changelog") version "0.8.0"
+    id("org.hildan.github.changelog") version "2.2.0"
 }
 
 allprojects {
@@ -87,14 +84,3 @@ if (!version.toString().endsWith("-SNAPSHOT")) {
         }
     }
 }
-
-fun ReleaseExtension.git(configure: GitConfig.() -> Unit) = (getProperty("git") as GitConfig).configure()
-
-release {
-    git {
-        requireBranch = "main"
-    }
-}
-
-val sonarqube by tasks
-sonarqube.enabled = false //FIXME requires Java 17
