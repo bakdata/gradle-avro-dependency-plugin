@@ -4,6 +4,7 @@ plugins {
     id("com.bakdata.sonar") version "1.1.17"
     id("com.bakdata.sonatype") version "1.1.14"
     id("org.hildan.github.changelog") version "1.13.1"
+    id("org.gradle.kotlin.kotlin-dsl") version "2.1.6" apply false
     id("com.gradle.plugin-publish") version "1.2.1" apply false
 }
 
