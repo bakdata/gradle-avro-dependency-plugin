@@ -1,7 +1,7 @@
 buildscript {
     dependencies {
         classpath("org.gradle.kotlin:gradle-kotlin-dsl-plugins:4.3.0")
-        classpath("com.gradle.publish:plugin-publish-plugin:0.11.0")
+        classpath("com.gradle.publish:plugin-publish-plugin:1.2.1")
     }
 }
 
@@ -66,6 +66,7 @@ if (!version.toString().endsWith("-SNAPSHOT")) {
                             id = "com.bakdata.${project.name}"
                             implementationClass = "com.bakdata.gradle.${project.name.capitalize()}Plugin"
                             description = project.description
+                            displayName = "Bakdata $name plugin"
                         }
                     }
                 }
@@ -73,12 +74,7 @@ if (!version.toString().endsWith("-SNAPSHOT")) {
                 configure<com.gradle.publish.PluginBundleExtension> {
                     website = "https://github.com/bakdata/gradle-avro-dependency-plugin"
                     vcsUrl = "https://github.com/bakdata/gradle-avro-dependency-plugin"
-                    (plugins) {
-                        "${name.capitalize()}Plugin" {
-                            displayName = "Bakdata $name plugin"
-                            tags = listOf("bakdata", name)
-                        }
-                    }
+                    tags = listOf("bakdata", name)
                 }
             }
         }
