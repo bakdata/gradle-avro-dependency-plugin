@@ -3,7 +3,7 @@ import net.researchgate.release.ReleaseExtension
 
 buildscript {
     dependencies {
-        classpath("org.gradle.kotlin:plugins:1.2.0")
+        classpath("org.gradle.kotlin:plugins:1.3.3")
         classpath("com.gradle.publish:plugin-publish-plugin:0.11.0")
     }
 }
@@ -11,7 +11,7 @@ buildscript {
 plugins {
     // release
     id("net.researchgate.release") version "2.8.1"
-    id("com.bakdata.sonar") version "1.1.14"
+    id("com.bakdata.sonar") version "1.1.17"
     id("com.bakdata.sonatype") version "1.1.14"
     id("org.hildan.github.changelog") version "0.8.0"
 }
