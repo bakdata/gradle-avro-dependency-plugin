@@ -1,6 +1,6 @@
 buildscript {
     dependencies {
-        classpath("org.gradle.kotlin:gradle-kotlin-dsl-plugins:4.3.0")
+        classpath("org.gradle.kotlin:gradle-kotlin-dsl-plugins:4.1.2")
         classpath("com.gradle.publish:plugin-publish-plugin:1.2.1")
     }
 }
@@ -42,6 +42,12 @@ configure<org.hildan.github.changelog.plugin.GitHubChangelogExtension> {
 
 subprojects {
     apply(plugin = "java")
+
+    configure<JavaPluginExtension> {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(11)
+        }
+    }
 
     dependencies {
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.7.2")
