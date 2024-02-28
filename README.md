@@ -49,3 +49,23 @@ By just using the gradle-avro-plugin, you would not be able to compile the schem
 because the schema for `com.bakdata.kafka.DeadLetter` is not present in the project.
 It is located in the `com.bakdata.kafka:error-handling` dependency
 and our plugin adds it to the classpath of the Avro compiler.
+
+## Development
+
+Snapshot versions of these plugins are published to Sonatype.
+You can use them in your project by adding the following snippet to your `build.gradle.kts`
+
+```
+buildscript {
+  repositories {
+    maven {
+      url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots")
+    }
+  }
+  dependencies {
+    classpath("com.bakdata.gradle:avro:0.0.1-SNAPSHOT")
+  }
+}
+
+apply(plugin = "com.bakdata.avro")
+```
