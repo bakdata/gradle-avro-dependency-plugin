@@ -30,7 +30,10 @@ configure<com.bakdata.gradle.SonatypeSettings> {
 
 subprojects {
     apply(plugin = "java")
-    tasks.named("publishPluginMavenPublicationToNexusRepository") { dependsOn(tasks.withType<Sign>()) }
+
+    tasks.matching {
+        it.name == "publishPluginMavenPublicationToNexusRepository"
+    }.all { dependsOn(tasks.withType<Sign>()) }
 
     configure<JavaPluginExtension> {
         toolchain {
