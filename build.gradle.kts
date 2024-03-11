@@ -32,8 +32,10 @@ subprojects {
     apply(plugin = "java")
 
     tasks.matching {
-        it.name == "publishPluginMavenPublicationToNexusRepository"
-    }.all { dependsOn(tasks.withType<Sign>()) }
+        it is AbstractPublishToMaven
+    }.all {
+        dependsOn(tasks.withType<Sign>())
+    }
 
     configure<JavaPluginExtension> {
         toolchain {
