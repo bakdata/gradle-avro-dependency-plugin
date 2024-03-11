@@ -1,11 +1,22 @@
+buildscript {
+    repositories {
+        maven {
+            url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots")
+        }
+    }
+    dependencies {
+        classpath("com.bakdata.gradle:sonatype:1.3.2-SNAPSHOT")
+    }
+}
+
 plugins {
     // release
     id("com.bakdata.release") version "1.3.0"
     id("com.bakdata.sonar") version "1.1.17"
-    id("com.bakdata.sonatype") version "1.3.1"
     id("org.gradle.kotlin.kotlin-dsl") version "4.1.2" apply false
     id("com.gradle.plugin-publish") version "1.2.1" apply false
 }
+apply(plugin = "com.bakdata.sonatype")
 
 allprojects {
     repositories {
@@ -30,12 +41,6 @@ configure<com.bakdata.gradle.SonatypeSettings> {
 
 subprojects {
     apply(plugin = "java")
-
-    tasks.matching {
-        it is AbstractPublishToMaven
-    }.all {
-        dependsOn(tasks.withType<Sign>())
-    }
 
     configure<JavaPluginExtension> {
         toolchain {
