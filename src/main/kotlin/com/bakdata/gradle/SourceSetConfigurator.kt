@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2024 bakdata
+ * Copyright (c) 2025 bakdata
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,7 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.SourceSet
 import java.io.File
+import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
@@ -149,10 +150,10 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     ) =
         if (configurationName.startsWith(name)) {
             // e.g. testImplementation becomes testAvroImplementation
-            "$name${prefix.capitalize()}" + configurationName.split(name.toPattern(), 2)[1]
+            "$name${prefix.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}" + configurationName.split(name.toPattern(), 2)[1]
         } else {
             // e.g. implementation becomes avroImplementation
-            "$prefix${configurationName.capitalize()}"
+            "$prefix${configurationName.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}"
         }
 
     private fun ConfigurationContainer.registerResources(sourceSet: SourceSet) {
