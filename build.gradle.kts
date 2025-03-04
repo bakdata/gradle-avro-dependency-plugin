@@ -22,7 +22,7 @@ tasks.withType<Test> {
     maxParallelForks = 4
 }
 
-sonatype {
+publication {
     developers {
         developer {
             name.set("Philipp Schirmer")

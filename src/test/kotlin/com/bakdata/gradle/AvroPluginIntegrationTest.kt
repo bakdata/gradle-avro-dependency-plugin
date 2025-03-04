@@ -31,18 +31,12 @@ import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
-import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 
 internal class AvroPluginIntegrationTest {
     private fun taskWithPathAndOutcome(path: String, outcome: TaskOutcome):
             Condition<BuildTask> = Condition({ it.path == path && it.outcome == outcome }, "Task $path=$outcome")
-
-    private fun GradleRunner.withProjectPluginClassPath(): GradleRunner {
-        val classpath = System.getProperty("java.class.path")
-        return withPluginClasspath(classpath.split(":").map { File(it) })
-    }
 
     @Test
     fun shouldCompileAndHaveNoExternalClassFiles(@TempDir testProjectDir: Path) {
@@ -75,7 +69,7 @@ internal class AvroPluginIntegrationTest {
         val result = GradleRunner.create()
             .withProjectDir(testProjectDir.toFile())
             .withArguments("build")
-            .withProjectPluginClassPath()
+            .withPluginClasspath()
             .build()
 
         SoftAssertions.assertSoftly { softly ->
@@ -132,19 +126,19 @@ internal class AvroPluginIntegrationTest {
         GradleRunner.create()
             .withProjectDir(testProjectDir.toFile())
             .withArguments("build")
-            .withProjectPluginClassPath()
+            .withPluginClasspath()
             .build()
 
         GradleRunner.create()
             .withProjectDir(testProjectDir.toFile())
             .withArguments("clean")
-            .withProjectPluginClassPath()
+            .withPluginClasspath()
             .build()
 
         val result = GradleRunner.create()
             .withProjectDir(testProjectDir.toFile())
             .withArguments("build")
-            .withProjectPluginClassPath()
+            .withPluginClasspath()
             .build()
 
         SoftAssertions.assertSoftly { softly ->
