@@ -35,6 +35,7 @@ import org.gradle.api.file.FileTree
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.TaskProvider
 import java.io.File
 import java.util.*
 import java.util.zip.ZipEntry
@@ -45,24 +46,25 @@ private const val EXTERNAL_AVRO_RESOURCES = "externalAvroResources"
 class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     private val project: Project
     private val sourceSet: SourceSet
-    private val generateAvroJava: GenerateAvroJavaTask
+    private val generateAvroJava: TaskProvider<GenerateAvroJavaTask>
     private val externalAvroDir: Provider<Directory>
-    private val configureCopyAvro: Task
-    private val copyAvro: Copy
+    private val configureCopyAvro: TaskProvider<Task>
+    private val copyAvro: TaskProvider<Copy>
 
     init {
         this.project = project
         this.sourceSet = sourceSet
         this.generateAvroJava =
-            project.tasks.named(sourceSet.getTaskName("generate", "avroJava"), GenerateAvroJavaTask::class.java).get()
+            project.tasks.named(sourceSet.getTaskName("generate", "avroJava"), GenerateAvroJavaTask::class.java)
         this.externalAvroDir = project.layout.buildDirectory.dir("external-${sourceSet.name}-avro")
-        this.configureCopyAvro = project.task(sourceSet.getTaskName("configureCopy", EXTERNAL_AVRO_RESOURCES)) {
-            group = generateAvroJava.group
+        this.configureCopyAvro =
+            project.tasks.register(sourceSet.getTaskName("configureCopy", EXTERNAL_AVRO_RESOURCES)) {
+                group = generateAvroJava.get().group
         }
         this.copyAvro =
-            project.tasks.create(sourceSet.getTaskName("copy", EXTERNAL_AVRO_RESOURCES), Copy::class.java) {
+            project.tasks.register(sourceSet.getTaskName("copy", EXTERNAL_AVRO_RESOURCES), Copy::class.java) {
                 dependsOn(configureCopyAvro)
-                group = generateAvroJava.group
+                group = generateAvroJava.get().group
             }
     }
 
@@ -101,36 +103,42 @@ class SourceSetConfigurator(project: Project, sourceSet: SourceSet) {
     private fun addSources(
         avroConfiguration: Configuration
     ) {
-        configureCopyAvro.dependsOn(avroConfiguration)
-        // copy external avro files to separate build directory.
-        // Directly adding zipTree as source breaks caching: https://github.com/gradle/gradle/issues/18382
-        configureCopyAvro.doLast {
-            copyAvro.from(
-                avroConfiguration.map { file: File ->
-                    copyAvro.project.zipTree(file)
-                }) {
-                include("**/*.avsc")
-            }
-            copyAvro.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-            copyAvro.into(externalAvroDir)
-            copyAvro.includeEmptyDirs = false
-            val exclusions: List<String> = avroConfiguration.findExclusions()
-            // empty exclusions would delete whole folder
-            if (exclusions.isNotEmpty()) {
-                with(generateAvroJava) {
-                    outputs.files.forEach { outputFile: File ->
-                        val filesToDelete: FileTree = project.fileTree(outputFile) {
-                            include(exclusions)
-                        }
-                        doLast {
-                            project.delete(filesToDelete)
+        configureCopyAvro.configure {
+            dependsOn(avroConfiguration)
+            // copy external avro files to separate build directory.
+            // Directly adding zipTree as source breaks caching: https://github.com/gradle/gradle/issues/18382
+            doLast {
+                with(copyAvro.get()) {
+                    from(
+                        avroConfiguration.map { file: File ->
+                            project.zipTree(file)
+                        }) {
+                        include("**/*.avsc")
+                    }
+                    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                    into(externalAvroDir)
+                    includeEmptyDirs = false
+                    val exclusions: List<String> = avroConfiguration.findExclusions()
+                    // empty exclusions would delete whole folder
+                    if (exclusions.isNotEmpty()) {
+                        with(generateAvroJava.get()) {
+                            outputs.files.forEach { outputFile: File ->
+                                val filesToDelete: FileTree = project.fileTree(outputFile) {
+                                    include(exclusions)
+                                }
+                                doLast {
+                                    project.delete(filesToDelete)
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-        generateAvroJava.dependsOn(copyAvro)
-        generateAvroJava.source(externalAvroDir)
+        generateAvroJava.configure {
+            dependsOn(copyAvro)
+            source(externalAvroDir)
+        }
     }
 
     private fun Configuration.findExclusions() =
