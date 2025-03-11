@@ -4,7 +4,7 @@ plugins {
     // release
     id("com.bakdata.release") version "1.8.1"
     id("com.bakdata.sonar") version "1.8.1"
-    id("com.bakdata.sonatype") version "1.8.2-SNAPSHOT"
+    id("com.bakdata.sonatype") version "1.9.0"
     id("org.gradle.kotlin.kotlin-dsl") version "5.1.2"
     id("com.gradle.plugin-publish") version "1.3.0"
     id("org.jetbrains.dokka") version "1.9.10"

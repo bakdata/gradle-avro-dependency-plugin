@@ -53,19 +53,13 @@ and our plugin adds it to the classpath of the Avro compiler.
 ## Development
 
 Snapshot versions of these plugins are published to Sonatype.
-You can use them in your project by adding the following snippet to your `build.gradle.kts`
+You can use them in your project by adding the following snippet to your `settings.gradle.kts`
 
 ```
-buildscript {
-  repositories {
-    maven {
-      url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots")
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots")
     }
-  }
-  dependencies {
-    classpath("com.bakdata.gradle:avro:0.0.1-SNAPSHOT")
-  }
 }
-
-apply(plugin = "com.bakdata.avro")
 ```
