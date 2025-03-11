@@ -4,6 +4,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'gradle-avro-dependency-plugin'
-
-include 'avro'
+rootProject.name = "gradle-avro-dependency-plugin"
