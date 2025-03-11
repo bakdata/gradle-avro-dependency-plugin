@@ -1,5 +1,17 @@
 # Change Log
 
+## [1.5.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.5.0) (2025-03-11)
+[View commits](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.5.0...1.5.0)
+
+
+## [1.5.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.5.0) (2025-03-11)
+[View commits](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.4.0...1.5.0)
+
+**Merged pull requests:**
+
+- Avoid task configuration [\#16](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/16) ([@philipp94831](https://github.com/philipp94831))
+- Upgrade to Gradle 8.12 and unwrap child project [\#15](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/15) ([@philipp94831](https://github.com/philipp94831))
+
 ## [1.4.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.4.0) (2024-03-12)
 [View commits](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.3.1...1.4.0)
 
