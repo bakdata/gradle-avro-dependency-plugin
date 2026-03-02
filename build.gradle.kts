@@ -2,12 +2,12 @@ plugins {
     java
     `java-gradle-plugin`
     // release
-    id("com.bakdata.release") version "1.8.1"
-    id("com.bakdata.sonar") version "1.8.1"
-    id("com.bakdata.sonatype") version "1.9.0"
-    id("org.gradle.kotlin.kotlin-dsl") version "5.1.2"
-    id("com.gradle.plugin-publish") version "1.3.0"
-    id("org.jetbrains.dokka") version "1.9.10"
+    alias(libs.plugins.release)
+    alias(libs.plugins.sonar)
+    alias(libs.plugins.sonatype)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.plugin.publish)
+    alias(libs.plugins.dokka)
 }
 
 description = "A Gradle plugin that lets you compile Apache Avro schemas to Java classes and supports dependencies"
@@ -34,11 +34,11 @@ publication {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
-// config for gradle plugin portal doesn't support snapshot, so we add config only if release version
+// config for Gradle plugin portal doesn't support snapshot, so we add config only if release version
 if (!version.toString().endsWith("-SNAPSHOT")) {
     apply(plugin = "com.gradle.plugin-publish")
 }
@@ -58,9 +58,8 @@ gradlePlugin {
 }
 
 dependencies {
-    val junitVersion = "5.11.4"
-    testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = junitVersion)
-    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = junitVersion)
-    testImplementation(group = "org.assertj", name = "assertj-core", version = "3.27.2")
-    implementation(group = "com.github.davidmc24.gradle.plugin", name = "gradle-avro-plugin", version = "1.9.1")
+    testRuntimeOnly(libs.junit.platform.launcher)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.assertj)
+    implementation(libs.avro.plugin)
 }
