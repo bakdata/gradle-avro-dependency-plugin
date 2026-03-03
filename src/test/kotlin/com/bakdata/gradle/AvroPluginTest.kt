@@ -61,7 +61,7 @@ internal class AvroPluginTest {
         }.doesNotThrowAnyException()
 
         SoftAssertions.assertSoftly { softly ->
-            softly.assertThat(project.plugins.hasPlugin("com.github.davidmc24.gradle.plugin.avro"))
+            softly.assertThat(project.plugins.hasPlugin("com.bakdata.gradle.davidmc24.avro"))
                 .isTrue
             softly.assertThat(project.collectTasks())
                 .haveExactly(1, taskWithName("configureCopyExternalAvroResources"))
@@ -102,7 +102,7 @@ internal class AvroPluginTest {
         }.doesNotThrowAnyException()
 
         SoftAssertions.assertSoftly { softly ->
-            softly.assertThat(project.plugins.hasPlugin("com.github.davidmc24.gradle.plugin.avro"))
+            softly.assertThat(project.plugins.hasPlugin("com.bakdata.gradle.davidmc24.avro"))
                 .isTrue
             softly.assertThat(project.collectTasks())
                 .haveExactly(1, taskWithName("configureCopyExternalAvroResources"))

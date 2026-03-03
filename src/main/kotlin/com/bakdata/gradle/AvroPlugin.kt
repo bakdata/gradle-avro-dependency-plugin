@@ -34,7 +34,7 @@ import org.gradle.kotlin.dsl.getByType
 class AvroPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        project.plugins.apply("com.github.davidmc24.gradle.plugin.avro")
+        project.plugins.apply("com.bakdata.gradle.davidmc24.avro")
         val sourceSets: SourceSetContainer = project.getSourceSets()
         val configurationsWithAvroConfiguration: Map<Configuration, Configuration> = sourceSets
             .flatMap { sourceSet: SourceSet ->
