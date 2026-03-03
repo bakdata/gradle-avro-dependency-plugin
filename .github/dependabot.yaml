@@ -1,0 +1,32 @@
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    groups:
+      test-dependencies:
+        patterns:
+          - "org.junit*"
+          - "org.assertj*"
+          - "*junit*"
+          - "org.mockito*"
+          - "org.testcontainers*"
+          - "org.awaitility*"
+      plugins:
+        patterns:
+          - "com.bakdata.release"
+          - "com.bakdata.sonar"
+          - "com.bakdata.sonatype"
+      freefair-plugins:
+        patterns:
+          - "io.freefair*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    groups:
+      ci-templates:
+        patterns:
+          - "bakdata/ci-templates*"
