@@ -50,7 +50,7 @@ gradlePlugin {
     plugins {
         create("AvroPlugin") {
             id = "com.bakdata.avro"
-            implementationClass = "com.bakdata.gradle.AvroPlugin"
+            implementationClass = "com.bakdata.gradle.avro.AvroDependencyPlugin"
             description = project.description
             displayName = "Gradle Avro dependency plugin"
             tags = listOf("bakdata", "avro")
