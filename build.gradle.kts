@@ -17,7 +17,7 @@ repositories {
     maven(url = "https://central.sonatype.com/repository/maven-snapshots")
 }
 
-group = "com.bakdata.gradle"
+group = "com.bakdata.gradle.avro"
 
 tasks.withType<Test> {
     maxParallelForks = 4
