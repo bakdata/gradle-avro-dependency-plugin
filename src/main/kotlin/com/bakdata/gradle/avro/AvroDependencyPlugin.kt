@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bakdata.gradle
+package com.bakdata.gradle.avro
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -31,10 +31,10 @@ import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.getByType
 
-class AvroPlugin : Plugin<Project> {
+class AvroDependencyPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        project.plugins.apply("com.bakdata.gradle.davidmc24.avro")
+        project.plugins.apply("com.bakdata.gradle.avro")
         val sourceSets: SourceSetContainer = project.getSourceSets()
         val configurationsWithAvroConfiguration: Map<Configuration, Configuration> = sourceSets
             .flatMap { sourceSet: SourceSet ->
