@@ -1,77 +1,111 @@
-# Change Log
+# Changelog
 
-## [1.5.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.5.0) (2025-03-11)
-[View commits](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.5.0...1.5.0)
+All notable changes to this project will be documented in this file.
+
+## [2.0.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/2.0.0) - 2026-03-17
+### What's changed
+
+* Upgrade to Gradle 9.3 and Java 17 by @philipp94831 in [#17](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/17)
+
+* Configure Dependabot by @philipp94831 in [#18](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/18)
+
+* Bump the ci-templates group with 2 updates by @dependabot[bot] in [#19](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/19)
+
+* Use new Avro plugin by @philipp94831 in [#22](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/22)
 
 
-## [1.5.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.5.0) (2025-03-11)
-[View commits](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.4.0...1.5.0)
+### New Contributors
+* @dependabot[bot] made their first contribution in [#19](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/19)
 
-**Merged pull requests:**
+**Full Changelog**: https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.5.0...2.0.0
 
-- Avoid task configuration [\#16](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/16) ([@philipp94831](https://github.com/philipp94831))
-- Upgrade to Gradle 8.12 and unwrap child project [\#15](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/15) ([@philipp94831](https://github.com/philipp94831))
+## [1.5.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.5.0) - 2025-03-11
+### What's changed
 
-## [1.4.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.4.0) (2024-03-12)
-[View commits](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.3.1...1.4.0)
+* Upgrade to Gradle 8.12 and unwrap child project by @philipp94831 in [#15](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/15)
 
-**Closed issues:**
+* Avoid task configuration by @philipp94831 in [#16](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/16)
 
-- Exclude schemas [\#9](https://github.com/bakdata/gradle-avro-dependency-plugin/issues/9)
 
-**Merged pull requests:**
+**Full Changelog**: https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.4.0...1.5.0
 
-- Upgrade to Gradle 8.4 [\#14](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/14) ([@philipp94831](https://github.com/philipp94831))
-- Setup Gradle plugin for correct snapshot publication [\#13](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/13) ([@philipp94831](https://github.com/philipp94831))
-- Upgrade to Gradle 7.2 [\#12](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/12) ([@philipp94831](https://github.com/philipp94831))
-- Fix plugin publication [\#11](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/11) ([@philipp94831](https://github.com/philipp94831))
-- Migrate azure pipeline to GH\-action [\#10](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/10) ([@yannick-roeder](https://github.com/yannick-roeder))
+## [1.4.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.4.0) - 2024-03-12
+### What's changed
 
-## [1.3.1](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.3.1) (2024-01-16)
-[View commits](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.3.0...1.3.1)
+* Migrate azure pipeline to GH-action by @yannick-roeder in [#10](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/10)
 
-**Merged pull requests:**
+* Fix plugin publication by @philipp94831 in [#11](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/11)
 
-- Improve caching [\#8](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/8) ([@philipp94831](https://github.com/philipp94831))
+* Upgrade to Gradle 7.2 by @philipp94831 in [#12](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/12)
 
-## [1.3.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.3.0) (2024-01-15)
-[View commits](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.2.1...1.3.0)
+* Setup Gradle plugin for correct snapshot publication by @philipp94831 in [#13](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/13)
 
-**Merged pull requests:**
+* Upgrade to Gradle 8.4 by @philipp94831 in [#14](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/14)
 
-- Delete external java files in generateAvroJava task [\#7](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/7) ([@philipp94831](https://github.com/philipp94831))
 
-## [1.2.1](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.2.1) (2024-01-10)
-[View commits](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.2.0...1.2.1)
+### New Contributors
+* @yannick-roeder made their first contribution in [#10](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/10)
 
-**Merged pull requests:**
+**Full Changelog**: https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.3.1...1.4.0
 
-- Upgrade Sonatype plugin to 1.1.9 [\#6](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/6) ([@philipp94831](https://github.com/philipp94831))
+## [1.3.1](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.3.1) - 2024-01-16
+### What's changed
 
-## [1.2.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.2.0) (2024-01-05)
-[View commits](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.1.0...1.2.0)
+* Improve caching by @philipp94831 in [#8](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/8)
 
-**Merged pull requests:**
 
-- Upgrade Avro plugin to 1.9.1 [\#5](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/5) ([@philipp94831](https://github.com/philipp94831))
+**Full Changelog**: https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.3.0...1.3.1
 
-## [1.1.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.1.0) (2022-12-23)
-[View commits](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.0.1...1.1.0)
+## [1.3.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.3.0) - 2024-01-15
+### What's changed
 
-**Merged pull requests:**
+* Delete external java files in generateAvroJava task by @philipp94831 in [#7](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/7)
 
-- Upgrade Avro plugin to 1.5 for Avro 1.11 compatibility [\#4](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/4) ([@philipp94831](https://github.com/philipp94831))
 
-## [1.0.1](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.0.1) (2022-03-15)
-[View commits](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.0.0...1.0.1)
+**Full Changelog**: https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.2.1...1.3.0
 
-**Merged pull requests:**
+## [1.2.1](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.2.1) - 2024-01-10
+### What's changed
 
-- Configure duplicates strategy for copy task [\#3](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/3) ([@philipp94831](https://github.com/philipp94831))
+* Upgrade Sonatype plugin to 1.1.9 by @philipp94831 in [#6](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/6)
 
-## [1.0.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.0.0) (2022-02-24)
-[View commits](https://github.com/bakdata/gradle-avro-dependency-plugin/compare/01efc035c10eea8b75035b97962a498800dd629d...1.0.0)
 
-**Merged pull requests:**
+**Full Changelog**: https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.2.0...1.2.1
 
-- Create Avro Dependency Plugin [\#1](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/1) ([@philipp94831](https://github.com/philipp94831))
+## [1.2.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.2.0) - 2024-01-05
+### What's changed
+
+* Upgrade Avro plugin to 1.9.1 by @philipp94831 in [#5](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/5)
+
+
+**Full Changelog**: https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.1.0...1.2.0
+
+## [1.1.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.1.0) - 2022-12-23
+### What's changed
+
+* Upgrade Avro plugin to 1.5 for Avro 1.11 compatibility by @philipp94831 in [#4](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/4)
+
+
+**Full Changelog**: https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.0.1...1.1.0
+
+## [1.0.1](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.0.1) - 2022-03-15
+### What's changed
+
+* Configure duplicates strategy for copy task by @philipp94831 in [#3](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/3)
+
+
+**Full Changelog**: https://github.com/bakdata/gradle-avro-dependency-plugin/compare/1.0.0...1.0.1
+
+## [1.0.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/1.0.0) - 2022-02-24
+### What's changed
+
+* Initial commit by @philipp94831
+
+* Create Avro Dependency Plugin by @philipp94831 in [#1](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/1)
+
+
+### New Contributors
+* @bakdata-bot made their first contribution
+* @philipp94831 made their first contribution in [#1](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/1)
+
+<!-- generated by git-cliff -->
