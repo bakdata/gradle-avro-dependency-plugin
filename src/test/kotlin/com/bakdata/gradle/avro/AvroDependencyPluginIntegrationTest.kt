@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bakdata.gradle
+package com.bakdata.gradle.avro
 
 import org.assertj.core.api.Condition
 import org.assertj.core.api.SoftAssertions
@@ -34,7 +34,7 @@ import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Files
 import java.nio.file.Path
 
-internal class AvroPluginIntegrationTest {
+internal class AvroDependencyPluginIntegrationTest {
     private fun taskWithPathAndOutcome(path: String, outcome: TaskOutcome):
             Condition<BuildTask> = Condition({ it.path == path && it.outcome == outcome }, "Task $path=$outcome")
 
@@ -60,12 +60,12 @@ internal class AvroPluginIntegrationTest {
         )
         Files.createDirectories(testProjectDir.resolve("src/main/avro/"))
         Files.copy(
-            AvroPluginIntegrationTest::class.java.getResourceAsStream("/Record.avsc"),
+            AvroDependencyPluginIntegrationTest::class.java.getResourceAsStream("/Record.avsc"),
             testProjectDir.resolve("src/main/avro/Record.avsc")
         )
         Files.createDirectories(testProjectDir.resolve("src/test/avro/"))
         Files.copy(
-            AvroPluginIntegrationTest::class.java.getResourceAsStream("/TestRecord.avsc"),
+            AvroDependencyPluginIntegrationTest::class.java.getResourceAsStream("/TestRecord.avsc"),
             testProjectDir.resolve("src/test/avro/TestRecord.avsc")
         )
 
@@ -120,12 +120,12 @@ internal class AvroPluginIntegrationTest {
         )
         Files.createDirectories(testProjectDir.resolve("src/main/avro/"))
         Files.copy(
-            AvroPluginIntegrationTest::class.java.getResourceAsStream("/Record.avsc"),
+            AvroDependencyPluginIntegrationTest::class.java.getResourceAsStream("/Record.avsc"),
             testProjectDir.resolve("src/main/avro/Record.avsc")
         )
         Files.createDirectories(testProjectDir.resolve("src/test/avro/"))
         Files.copy(
-            AvroPluginIntegrationTest::class.java.getResourceAsStream("/TestRecord.avsc"),
+            AvroDependencyPluginIntegrationTest::class.java.getResourceAsStream("/TestRecord.avsc"),
             testProjectDir.resolve("src/test/avro/TestRecord.avsc")
         )
 

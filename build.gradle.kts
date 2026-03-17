@@ -14,9 +14,10 @@ description = "A Gradle plugin that lets you compile Apache Avro schemas to Java
 
 repositories {
     maven(url = "https://plugins.gradle.org/m2/")
+    maven(url = "https://central.sonatype.com/repository/maven-snapshots")
 }
 
-group = "com.bakdata.gradle"
+group = "com.bakdata.gradle.avro"
 
 tasks.withType<Test> {
     maxParallelForks = 4
@@ -49,7 +50,7 @@ gradlePlugin {
     plugins {
         create("AvroPlugin") {
             id = "com.bakdata.avro"
-            implementationClass = "com.bakdata.gradle.AvroPlugin"
+            implementationClass = "com.bakdata.gradle.avro.AvroDependencyPlugin"
             description = project.description
             displayName = "Gradle Avro dependency plugin"
             tags = listOf("bakdata", "avro")

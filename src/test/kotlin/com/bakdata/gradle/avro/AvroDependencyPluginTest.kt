@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bakdata.gradle
+package com.bakdata.gradle.avro
 
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Condition
@@ -38,7 +38,7 @@ import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class AvroPluginTest {
+internal class AvroDependencyPluginTest {
     fun taskWithName(name: String): Condition<Task> = Condition({ it.name == name }, "Task with name $name")
     fun configurationWithName(name: String): Condition<Configuration> =
         Condition({ it.name == name }, "Configuration with name $name")
@@ -61,7 +61,7 @@ internal class AvroPluginTest {
         }.doesNotThrowAnyException()
 
         SoftAssertions.assertSoftly { softly ->
-            softly.assertThat(project.plugins.hasPlugin("com.github.davidmc24.gradle.plugin.avro"))
+            softly.assertThat(project.plugins.hasPlugin("com.bakdata.gradle.avro"))
                 .isTrue
             softly.assertThat(project.collectTasks())
                 .haveExactly(1, taskWithName("configureCopyExternalAvroResources"))
@@ -102,7 +102,7 @@ internal class AvroPluginTest {
         }.doesNotThrowAnyException()
 
         SoftAssertions.assertSoftly { softly ->
-            softly.assertThat(project.plugins.hasPlugin("com.github.davidmc24.gradle.plugin.avro"))
+            softly.assertThat(project.plugins.hasPlugin("com.bakdata.gradle.avro"))
                 .isTrue
             softly.assertThat(project.collectTasks())
                 .haveExactly(1, taskWithName("configureCopyExternalAvroResources"))

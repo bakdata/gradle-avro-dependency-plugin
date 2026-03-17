@@ -22,9 +22,8 @@
  * SOFTWARE.
  */
 
-package com.bakdata.gradle
+package com.bakdata.gradle.avro
 
-import com.github.davidmc24.gradle.plugin.avro.GenerateAvroJavaTask
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
