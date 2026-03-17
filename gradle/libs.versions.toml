@@ -12,6 +12,6 @@ assertj = { group = "org.assertj", name = "assertj-core", version = "3.27.7" }
 release = { id = "com.bakdata.release", version = "2.1.0" }
 sonar = { id = "com.bakdata.sonar", version = "2.1.0" }
 sonatype = { id = "com.bakdata.sonatype", version = "2.1.0" }
-dokka = { id = "org.jetbrains.dokka", version = "2.0.0" }
+dokka = { id = "org.jetbrains.dokka", version = "2.1.0" }
 kotlin = { id = "org.gradle.kotlin.kotlin-dsl", version = "6.4.2" }
 plugin-publish = { id = "com.gradle.plugin-publish", version = "2.0.0" }
