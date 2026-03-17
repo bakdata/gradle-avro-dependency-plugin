@@ -2,7 +2,7 @@
 junit = "6.0.3"
 
 [libraries]
-avro-plugin = { group = "com.bakdata.gradle.avro", name = "gradle-avro-plugin", version = "1.10.0-SNAPSHOT" }
+avro-plugin = { group = "com.bakdata.gradle.avro", name = "gradle-avro-plugin", version = "2.0.0" }
 
 junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
