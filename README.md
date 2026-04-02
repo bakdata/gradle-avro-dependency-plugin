@@ -1,7 +1,7 @@
 [![Build and Publish](https://github.com/bakdata/gradle-avro-dependency-plugin/actions/workflows/build-and-publish.yaml/badge.svg)](https://github.com/bakdata/gradle-avro-dependency-plugin/actions/workflows/build-and-publish.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.bakdata.gradle.avro%3Agradle-avro-dependency-plugin&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=com.bakdata.gradle.avro%3Agradle-avro-dependency-plugin)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.bakdata.gradle.avro%3Agradle-avro-dependency-plugin&metric=coverage)](https://sonarcloud.io/summary/new_code?id=com.bakdata.gradle.avro%3Agradle-avro-dependency-plugin)
-[![Maven](https://img.shields.io/maven-central/v/com.bakdata.gradle.avro/gradle-avro-dependency-plugin.svg)](https://search.maven.org/search?q=g:com.bakdata.gradle.avro%20AND%20a:gradle-avro-dependency-plugin&core=gav)
+![Gradle Plugin Portal Version](https://img.shields.io/gradle-plugin-portal/v/com.bakdata.avro)
 
 # gradle-avro-dependency-plugin
 A Gradle plugin that lets you compile Apache Avro schemas to Java classes and supports dependencies.
