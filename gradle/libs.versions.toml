@@ -13,5 +13,5 @@ release = { id = "com.bakdata.release", version = "2.2.1" }
 sonar = { id = "com.bakdata.sonar", version = "2.2.1" }
 sonatype = { id = "com.bakdata.sonatype", version = "2.2.1" }
 dokka = { id = "org.jetbrains.dokka-javadoc", version = "2.2.0" }
-kotlin = { id = "org.gradle.kotlin.kotlin-dsl", version = "6.6.4" }
+kotlin = { id = "org.gradle.kotlin.kotlin-dsl", version = "6.7.8" }
 plugin-publish = { id = "com.gradle.plugin-publish", version = "2.1.1" }
