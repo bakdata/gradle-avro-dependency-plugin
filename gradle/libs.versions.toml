@@ -1,5 +1,5 @@
 [versions]
-junit = "6.1.2"
+junit = "6.1.3"
 
 [libraries]
 avro-plugin = { group = "com.bakdata.gradle.avro", name = "gradle-avro-plugin", version = "2.0.1" }
