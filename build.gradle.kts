@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.release)
     alias(libs.plugins.sonar)
     alias(libs.plugins.sonatype)
-    alias(libs.plugins.kotlin)
+    `kotlin-dsl`
     alias(libs.plugins.plugin.publish)
     alias(libs.plugins.dokka)
 }
