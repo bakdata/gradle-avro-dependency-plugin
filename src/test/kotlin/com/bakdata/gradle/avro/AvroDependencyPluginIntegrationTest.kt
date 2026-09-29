@@ -51,7 +51,7 @@ internal class AvroDependencyPluginIntegrationTest {
             }
             dependencies {
                 implementation(group ="org.apache.avro", name = "avro", version = "1.12.1")
-                avroImplementation(group = "com.bakdata.kafka", name = "error-handling", version = "3.0.0")
+                avroImplementation(group = "com.bakdata.kafka", name = "error-handling-avro", version = "3.0.0")
             }
             tasks.withType<AbstractTestTask>().configureEach {
                 failOnNoDiscoveredTests = false
@@ -106,7 +106,7 @@ internal class AvroDependencyPluginIntegrationTest {
             }
             dependencies {
                 implementation(group ="org.apache.avro", name = "avro", version = "1.12.1")
-                avroImplementation(group = "com.bakdata.kafka", name = "error-handling", version = "3.0.0")
+                avroImplementation(group = "com.bakdata.kafka", name = "error-handling-avro", version = "3.0.0")
             }
             tasks.withType<AbstractTestTask>().configureEach {
                 failOnNoDiscoveredTests = false
