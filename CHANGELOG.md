@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/2.0.1) - 2026-09-29
+### What's changed
+
+* Setup multi-ecosystem Dependabot group by @philipp94831 in [#29](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/29)
+
+* Bump com.gradle.plugin-publish from 2.0.0 to 2.1.1 by @dependabot[bot] in [#26](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/26)
+
+* Upgrade to Gradle 9.4 by @philipp94831 in [#30](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/30)
+
+* Bump the "build" group with 1 update across multiple ecosystems by @dependabot[bot] in [#31](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/31)
+
+* Bump the "build" group with 1 update across multiple ecosystems by @dependabot[bot] in [#33](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/33)
+
+* Bump org.junit.jupiter:junit-jupiter from 6.0.3 to 6.1.0 in the test-dependencies group by @dependabot[bot] in [#34](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/34)
+
+* Bump the "build" group with 1 update across multiple ecosystems by @dependabot[bot] in [#36](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/36)
+
+* Bump the "build" group with 2 updates across multiple ecosystems by @dependabot[bot] in [#38](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/38)
+
+* Bump org.junit.jupiter:junit-jupiter from 6.1.0 to 6.1.2 in the test-dependencies group by @dependabot[bot] in [#39](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/39)
+
+* Bump the "build" group with 1 update across multiple ecosystems by @dependabot[bot] in [#41](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/41)
+
+* Upgrade Dokka to v2 by @philipp94831 in [#42](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/42)
+
+* Bump org.junit.jupiter:junit-jupiter from 6.1.2 to 6.1.3 in the test-dependencies group by @dependabot[bot] in [#43](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/43)
+
+* Bump the "build" group with 1 update across multiple ecosystems by @dependabot[bot] in [#46](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/46)
+
+* Bump com.bakdata.gradle.avro:gradle-avro-plugin from 2.0.0 to 2.0.1 by @dependabot[bot] in [#44](https://github.com/bakdata/gradle-avro-dependency-plugin/pull/44)
+
+
+**Full Changelog**: https://github.com/bakdata/gradle-avro-dependency-plugin/compare/2.0.0...2.0.1
+
 ## [2.0.0](https://github.com/bakdata/gradle-avro-dependency-plugin/tree/2.0.0) - 2026-03-17
 ### What's changed
 
